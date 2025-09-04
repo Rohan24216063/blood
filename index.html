@@ -1,0 +1,1639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BloodConnect - Saving Lives Through Blood Donation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'blood-red': '#DC2626',
+                        'blood-light': '#FEF2F2',
+                        'blood-dark': '#991B1B'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .blood-drop { 
+            background: linear-gradient(135deg, #DC2626 0%, #991B1B 100%);
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+        }
+        .notification-badge {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .slide-in {
+            animation: slideIn 0.3s ease-out;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-3">
+                    <div class="blood-drop w-8 h-8"></div>
+                    <span class="text-2xl font-bold text-blood-red">BloodConnect</span>
+                </div>
+                
+                <!-- Navigation Menu (shown when logged in) -->
+                <div id="mainNav" class="hidden md:flex space-x-6">
+                    <button onclick="showPage('dashboard')" class="nav-btn text-gray-700 hover:text-blood-red transition-colors">Dashboard</button>
+                    <button onclick="showPage('donor')" class="nav-btn text-gray-700 hover:text-blood-red transition-colors">Donors</button>
+                    <button onclick="showPage('request')" class="nav-btn text-gray-700 hover:text-blood-red transition-colors">Requests</button>
+                    <button onclick="showPage('inventory')" class="nav-btn text-gray-700 hover:text-blood-red transition-colors">Inventory</button>
+                    <button onclick="showPage('search')" class="nav-btn text-gray-700 hover:text-blood-red transition-colors">Search</button>
+                    <button onclick="showPage('about')" class="nav-btn text-gray-700 hover:text-blood-red transition-colors">About</button>
+                    <button onclick="showPage('contact')" class="nav-btn text-gray-700 hover:text-blood-red transition-colors">Contact</button>
+                </div>
+
+                <!-- Public Navigation (shown when not logged in) -->
+                <div id="publicNav" class="hidden md:flex space-x-6">
+                    <button onclick="showPage('home')" class="nav-btn text-gray-700 hover:text-blood-red transition-colors">Home</button>
+                    <button onclick="showPage('about')" class="nav-btn text-gray-700 hover:text-blood-red transition-colors">About</button>
+                    <button onclick="showPage('contact')" class="nav-btn text-gray-700 hover:text-blood-red transition-colors">Contact</button>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <select id="languageSelect" class="border rounded px-2 py-1 text-sm" onchange="changeLanguage()">
+                        <option value="en">English</option>
+                        <option value="bn">বাংলা</option>
+                    </select>
+                    
+                    <!-- User Menu (shown when logged in) -->
+                    <div id="userMenu" class="hidden flex items-center space-x-4">
+                        <div class="relative">
+                            <button onclick="showNotifications()" class="relative p-2 text-gray-600 hover:text-blood-red">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5z"></path>
+                                </svg>
+                                <span class="notification-badge absolute -top-1 -right-1 bg-blood-red text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">3</span>
+                            </button>
+                        </div>
+                        <div class="relative">
+                            <button onclick="toggleUserDropdown()" class="flex items-center space-x-2 text-gray-700 hover:text-blood-red">
+                                <div class="w-8 h-8 bg-blood-red rounded-full flex items-center justify-center">
+                                    <span class="text-white text-sm" id="userInitials">JD</span>
+                                </div>
+                                <span id="userName">John Doe</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <div id="userDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border">
+                                <div class="py-1">
+                                    <button onclick="showProfile()" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</button>
+                                    <button onclick="showSettings()" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</button>
+                                    <hr class="my-1">
+                                    <button onclick="logout()" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Logout</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Auth Buttons (shown when not logged in) -->
+                    <div id="authButtons" class="flex items-center space-x-2">
+                        <button onclick="showPage('login')" class="text-blood-red hover:text-blood-dark transition-colors">Login</button>
+                        <button onclick="showPage('signup')" class="bg-blood-red text-white px-4 py-2 rounded-lg hover:bg-blood-dark transition-colors">Sign Up</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="mainContent">
+        <!-- Login Page -->
+        <div id="loginPage" class="page">
+            <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blood-light to-white">
+                <div class="max-w-md w-full bg-white rounded-xl shadow-2xl p-8 mx-4">
+                    <div class="text-center mb-8">
+                        <div class="blood-drop w-16 h-16 mx-auto mb-4"></div>
+                        <h2 class="text-3xl font-bold text-gray-800 mb-2">Welcome Back</h2>
+                        <p class="text-gray-600">Sign in to your BloodConnect account</p>
+                    </div>
+                    
+                    <form id="loginForm" class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Email or Phone</label>
+                            <input type="text" id="loginEmail" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blood-red focus:border-transparent transition-colors" placeholder="Enter your email or phone" required>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                            <div class="relative">
+                                <input type="password" id="loginPassword" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blood-red focus:border-transparent transition-colors" placeholder="Enter your password" required>
+                                <button type="button" onclick="togglePassword('loginPassword')" class="absolute right-3 top-3 text-gray-400 hover:text-gray-600">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <input type="checkbox" id="remember" class="mr-2 rounded border-gray-300 text-blood-red focus:ring-blood-red">
+                                <label for="remember" class="text-sm text-gray-700">Remember me</label>
+                            </div>
+                            <button type="button" onclick="showForgotPassword()" class="text-sm text-blood-red hover:underline">Forgot password?</button>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-blood-red text-white py-3 rounded-lg font-semibold hover:bg-blood-dark transition-colors transform hover:scale-105">
+                            Sign In
+                        </button>
+                    </form>
+                    
+                    <div class="mt-8">
+                        <div class="relative">
+                            <div class="absolute inset-0 flex items-center">
+                                <div class="w-full border-t border-gray-300"></div>
+                            </div>
+                            <div class="relative flex justify-center text-sm">
+                                <span class="px-2 bg-white text-gray-500">Or continue with</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 grid grid-cols-2 gap-3">
+                            <button onclick="loginWithRole('donor')" class="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                                <span class="mr-2">❤️</span>
+                                <span class="text-sm font-medium">As Donor</span>
+                            </button>
+                            <button onclick="loginWithRole('hospital')" class="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                                <span class="mr-2">🏥</span>
+                                <span class="text-sm font-medium">As Hospital</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 text-center">
+                        <p class="text-gray-600">Don't have an account? 
+                            <button onclick="showPage('signup')" class="text-blood-red hover:underline font-semibold">Sign up here</button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Signup Page -->
+        <div id="signupPage" class="page hidden">
+            <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blood-light to-white py-8">
+                <div class="max-w-2xl w-full bg-white rounded-xl shadow-2xl p-8 mx-4">
+                    <div class="text-center mb-8">
+                        <div class="blood-drop w-16 h-16 mx-auto mb-4"></div>
+                        <h2 class="text-3xl font-bold text-gray-800 mb-2">Join BloodConnect</h2>
+                        <p class="text-gray-600">Create your account and start saving lives</p>
+                    </div>
+                    
+                    <!-- Role Selection -->
+                    <div class="mb-8">
+                        <label class="block text-sm font-medium text-gray-700 mb-4">I want to register as:</label>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <button type="button" onclick="selectRole('donor')" class="role-btn p-4 border-2 border-gray-200 rounded-lg hover:border-blood-red transition-colors text-center">
+                                <div class="text-3xl mb-2">❤️</div>
+                                <div class="font-semibold">Blood Donor</div>
+                                <div class="text-sm text-gray-600">Donate blood and save lives</div>
+                            </button>
+                            <button type="button" onclick="selectRole('hospital')" class="role-btn p-4 border-2 border-gray-200 rounded-lg hover:border-blood-red transition-colors text-center">
+                                <div class="text-3xl mb-2">🏥</div>
+                                <div class="font-semibold">Hospital/Clinic</div>
+                                <div class="text-sm text-gray-600">Request blood for patients</div>
+                            </button>
+                            <button type="button" onclick="selectRole('bloodbank')" class="role-btn p-4 border-2 border-gray-200 rounded-lg hover:border-blood-red transition-colors text-center">
+                                <div class="text-3xl mb-2">🏦</div>
+                                <div class="font-semibold">Blood Bank</div>
+                                <div class="text-sm text-gray-600">Manage blood inventory</div>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <form id="signupForm" class="space-y-6">
+                        <input type="hidden" id="selectedRole" value="">
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+                                <input type="text" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blood-red focus:border-transparent" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+                                <input type="text" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blood-red focus:border-transparent" required>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                            <input type="email" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blood-red focus:border-transparent" required>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                                <input type="tel" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blood-red focus:border-transparent" required>
+                            </div>
+                            <div id="bloodGroupField" class="hidden">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Blood Group</label>
+                                <select class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blood-red focus:border-transparent">
+                                    <option value="">Select Blood Group</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                </select>
+                            </div>
+                            <div id="organizationField" class="hidden">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Organization Name</label>
+                                <input type="text" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blood-red focus:border-transparent">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                            <div class="relative">
+                                <input type="password" id="signupPassword" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blood-red focus:border-transparent" required>
+                                <button type="button" onclick="togglePassword('signupPassword')" class="absolute right-3 top-3 text-gray-400 hover:text-gray-600">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+                            <input type="password" id="confirmPassword" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blood-red focus:border-transparent" required>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <input type="checkbox" id="terms" class="mt-1 mr-3 rounded border-gray-300 text-blood-red focus:ring-blood-red" required>
+                            <label for="terms" class="text-sm text-gray-700">
+                                I agree to the <button type="button" class="text-blood-red hover:underline">Terms of Service</button> 
+                                and <button type="button" class="text-blood-red hover:underline">Privacy Policy</button>
+                            </label>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-blood-red text-white py-3 rounded-lg font-semibold hover:bg-blood-dark transition-colors transform hover:scale-105">
+                            Create Account
+                        </button>
+                    </form>
+                    
+                    <div class="mt-8 text-center">
+                        <p class="text-gray-600">Already have an account? 
+                            <button onclick="showPage('login')" class="text-blood-red hover:underline font-semibold">Sign in here</button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Page -->
+        <div id="dashboardPage" class="page hidden">
+            <div class="max-w-7xl mx-auto px-4 py-8">
+                <div class="flex justify-between items-center mb-8">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-800">Dashboard</h1>
+                        <p class="text-gray-600">Welcome back, <span id="dashboardUserName">John Doe</span></p>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-sm text-gray-600">Last login</div>
+                        <div class="font-semibold">Today, 10:30 AM</div>
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-600">Total Donations</p>
+                                <p class="text-3xl font-bold text-blood-red">12</p>
+                            </div>
+                            <div class="w-12 h-12 bg-blood-light rounded-full flex items-center justify-center">
+                                <span class="text-blood-red text-xl">❤️</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-600">Lives Saved</p>
+                                <p class="text-3xl font-bold text-green-600">36</p>
+                            </div>
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                                <span class="text-green-600 text-xl">🏆</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-600">Next Eligible</p>
+                                <p class="text-3xl font-bold text-blue-600">28</p>
+                                <p class="text-xs text-gray-500">days</p>
+                            </div>
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                                <span class="text-blue-600 text-xl">📅</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-600">Badges Earned</p>
+                                <p class="text-3xl font-bold text-yellow-600">5</p>
+                            </div>
+                            <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+                                <span class="text-yellow-600 text-xl">⭐</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity & Quick Actions -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h2 class="text-xl font-semibold mb-4 text-blood-red">Recent Activity</h2>
+                        <div class="space-y-4">
+                            <div class="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg">
+                                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                    <span class="text-green-600">✅</span>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="font-semibold text-sm">Blood Donation Completed</p>
+                                    <p class="text-xs text-gray-600">Donated 450ml at Dhaka Medical College</p>
+                                    <p class="text-xs text-gray-400">2 months ago</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg">
+                                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                    <span class="text-blue-600">🏆</span>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="font-semibold text-sm">Badge Earned: Hero Donor</p>
+                                    <p class="text-xs text-gray-600">Completed 10+ donations</p>
+                                    <p class="text-xs text-gray-400">2 months ago</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg">
+                                <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
+                                    <span class="text-yellow-600">📝</span>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="font-semibold text-sm">Profile Updated</p>
+                                    <p class="text-xs text-gray-600">Updated contact information</p>
+                                    <p class="text-xs text-gray-400">3 months ago</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h2 class="text-xl font-semibold mb-4 text-blood-red">Quick Actions</h2>
+                        <div class="grid grid-cols-2 gap-4">
+                            <button onclick="showPage('donor')" class="p-4 border-2 border-blood-red text-blood-red rounded-lg hover:bg-blood-red hover:text-white transition-colors">
+                                <div class="text-2xl mb-2">❤️</div>
+                                <div class="font-semibold text-sm">Schedule Donation</div>
+                            </button>
+                            
+                            <button onclick="showPage('request')" class="p-4 border-2 border-blue-600 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition-colors">
+                                <div class="text-2xl mb-2">🩸</div>
+                                <div class="font-semibold text-sm">Request Blood</div>
+                            </button>
+                            
+                            <button onclick="showPage('search')" class="p-4 border-2 border-green-600 text-green-600 rounded-lg hover:bg-green-600 hover:text-white transition-colors">
+                                <div class="text-2xl mb-2">🔍</div>
+                                <div class="font-semibold text-sm">Find Donors</div>
+                            </button>
+                            
+                            <button onclick="showProfile()" class="p-4 border-2 border-purple-600 text-purple-600 rounded-lg hover:bg-purple-600 hover:text-white transition-colors">
+                                <div class="text-2xl mb-2">👤</div>
+                                <div class="font-semibold text-sm">Update Profile</div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Home Page -->
+        <div id="homePage" class="page hidden">
+            <!-- Hero Section -->
+            <section class="bg-gradient-to-r from-blood-red to-blood-dark text-white py-20">
+                <div class="max-w-7xl mx-auto px-4 text-center">
+                    <h1 class="text-5xl font-bold mb-6 fade-in">Saving Lives Through Blood Donation</h1>
+                    <p class="text-xl mb-8 fade-in">Connect donors with those in need. Every drop counts, every donation saves lives.</p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center fade-in">
+                        <button onclick="showPage('signup')" class="bg-white text-blood-red px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">Register as Donor</button>
+                        <button onclick="showPage('signup')" class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blood-red transition-colors">Request Blood</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Stats -->
+            <section class="py-16 bg-white">
+                <div class="max-w-7xl mx-auto px-4">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
+                        <div class="fade-in">
+                            <div class="text-4xl font-bold text-blood-red mb-2">15,847</div>
+                            <div class="text-gray-600">Lives Saved</div>
+                        </div>
+                        <div class="fade-in">
+                            <div class="text-4xl font-bold text-blood-red mb-2">8,234</div>
+                            <div class="text-gray-600">Active Donors</div>
+                        </div>
+                        <div class="fade-in">
+                            <div class="text-4xl font-bold text-blood-red mb-2">1,456</div>
+                            <div class="text-gray-600">Blood Units Available</div>
+                        </div>
+                        <div class="fade-in">
+                            <div class="text-4xl font-bold text-blood-red mb-2">24/7</div>
+                            <div class="text-gray-600">Emergency Support</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features -->
+            <section class="py-16 bg-blood-light">
+                <div class="max-w-7xl mx-auto px-4">
+                    <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">How BloodConnect Works</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="bg-white p-6 rounded-lg shadow-md text-center fade-in">
+                            <div class="w-16 h-16 bg-blood-red rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span class="text-white text-2xl">👤</span>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2">Register</h3>
+                            <p class="text-gray-600">Sign up as a donor or create an account to request blood when needed.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md text-center fade-in">
+                            <div class="w-16 h-16 bg-blood-red rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span class="text-white text-2xl">🔍</span>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2">Match</h3>
+                            <p class="text-gray-600">Our AI system matches blood requests with compatible donors in your area.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md text-center fade-in">
+                            <div class="w-16 h-16 bg-blood-red rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span class="text-white text-2xl">❤️</span>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2">Save Lives</h3>
+                            <p class="text-gray-600">Connect, donate, and help save lives in your community.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Donor Management Page -->
+        <div id="donorPage" class="page hidden">
+            <div class="max-w-7xl mx-auto px-4 py-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-8">Donor Management</h1>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Registration Form -->
+                    <div class="lg:col-span-2">
+                        <div class="bg-white rounded-lg shadow-md p-6">
+                            <h2 class="text-2xl font-semibold mb-6 text-blood-red">Donor Registration</h2>
+                            <form id="donorForm" class="space-y-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                                        <input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blood-red focus:border-transparent" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Age</label>
+                                        <input type="number" min="18" max="65" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blood-red focus:border-transparent" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+                                        <select class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blood-red focus:border-transparent" required>
+                                            <option value="">Select Gender</option>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Blood Group</label>
+                                        <select class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blood-red focus:border-transparent" required>
+                                            <option value="">Select Blood Group</option>
+                                            <option value="A+">A+</option>
+                                            <option value="A-">A-</option>
+                                            <option value="B+">B+</option>
+                                            <option value="B-">B-</option>
+                                            <option value="AB+">AB+</option>
+                                            <option value="AB-">AB-</option>
+                                            <option value="O+">O+</option>
+                                            <option value="O-">O-</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Contact Number</label>
+                                    <input type="tel" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blood-red focus:border-transparent" required>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                                    <input type="email" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blood-red focus:border-transparent" required>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                                    <textarea class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blood-red focus:border-transparent" rows="3" required></textarea>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Last Donation Date</label>
+                                    <input type="date" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blood-red focus:border-transparent">
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Health Information</label>
+                                    <textarea class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blood-red focus:border-transparent" rows="3" placeholder="Any medical conditions, medications, or health concerns..."></textarea>
+                                </div>
+
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="terms" class="mr-2" required>
+                                    <label for="terms" class="text-sm text-gray-700">I agree to the terms and conditions and consent to donate blood</label>
+                                </div>
+
+                                <button type="submit" class="w-full bg-blood-red text-white py-3 rounded-lg font-semibold hover:bg-blood-dark transition-colors">Register as Donor</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Donor Profile & Stats -->
+                    <div class="space-y-6">
+                        <div class="bg-white rounded-lg shadow-md p-6">
+                            <h3 class="text-xl font-semibold mb-4 text-blood-red">Donor Profile</h3>
+                            <div class="text-center">
+                                <div class="w-20 h-20 bg-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center">
+                                    <span class="text-2xl">👤</span>
+                                </div>
+                                <h4 class="font-semibold">John Doe</h4>
+                                <p class="text-gray-600">Blood Group: O+</p>
+                                <p class="text-sm text-gray-500">Last Donation: 2 months ago</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow-md p-6">
+                            <h3 class="text-xl font-semibold mb-4 text-blood-red">Donation Stats</h3>
+                            <div class="space-y-3">
+                                <div class="flex justify-between">
+                                    <span>Total Donations:</span>
+                                    <span class="font-semibold">12</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Lives Saved:</span>
+                                    <span class="font-semibold text-blood-red">36</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Next Eligible:</span>
+                                    <span class="font-semibold">1 month</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow-md p-6">
+                            <h3 class="text-xl font-semibold mb-4 text-blood-red">Badges & Rewards</h3>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="text-center p-3 bg-yellow-50 rounded-lg">
+                                    <div class="text-2xl mb-1">🏆</div>
+                                    <div class="text-xs font-semibold">Hero Donor</div>
+                                </div>
+                                <div class="text-center p-3 bg-blue-50 rounded-lg">
+                                    <div class="text-2xl mb-1">⭐</div>
+                                    <div class="text-xs font-semibold">Regular Donor</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blood Request Page -->
+        <div id="requestPage" class="page hidden">
+            <div class="max-w-7xl mx-auto px-4 py-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-8">Blood Request Management</h1>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Request Form -->
+                    <div class="lg:col-span-2">
+                        <div class="bg-white rounded-lg shadow-md p-6">
+                            <h2 class="text-2xl font-semibold mb-6 text-blood-red">Blood Request Form</h2>
+                            <form id="requestForm" class="space-y-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Patient Name</label>
+                                        <input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blood-red focus:border-transparent" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Patient Age</label>
+                                        <input type="number" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blood-red focus:border-transparent" required>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Required Blood Group</label>
+                                        <select class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blood-red focus:border-transparent" required>
+                                            <option value="">Select Blood Group</option>
+                                            <option value="A+">A+</option>
+                                            <option value="A-">A-</option>
+                                            <option value="B+">B+</option>
+                                            <option value="B-">B-</option>
+                                            <option value="AB+">AB+</option>
+                                            <option value="AB-">AB-</option>
+                                            <option value="O+">O+</option>
+                                            <option value="O-">O-</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Units Required</label>
+                                        <input type="number" min="1" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blood-red focus:border-transparent" required>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Hospital Name</label>
+                                    <input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blood-red focus:border-transparent" required>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Hospital Address</label>
+                                    <textarea class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blood-red focus:border-transparent" rows="2" required></textarea>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Urgency Level</label>
+                                    <select class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blood-red focus:border-transparent" required>
+                                        <option value="">Select Urgency</option>
+                                        <option value="critical">Critical (Within 2 hours)</option>
+                                        <option value="urgent">Urgent (Within 24 hours)</option>
+                                        <option value="normal">Normal (Within 3 days)</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Doctor's Name</label>
+                                    <input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blood-red focus:border-transparent" required>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Contact Number</label>
+                                    <input type="tel" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blood-red focus:border-transparent" required>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Medical Condition/Reason</label>
+                                    <textarea class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blood-red focus:border-transparent" rows="3" required></textarea>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Doctor's Note (Upload)</label>
+                                    <input type="file" accept=".pdf,.jpg,.png" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blood-red focus:border-transparent">
+                                    <p class="text-xs text-gray-500 mt-1">Upload doctor's prescription or medical certificate</p>
+                                </div>
+
+                                <button type="submit" class="w-full bg-blood-red text-white py-3 rounded-lg font-semibold hover:bg-blood-dark transition-colors">Submit Blood Request</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Request Tracking -->
+                    <div class="space-y-6">
+                        <div class="bg-white rounded-lg shadow-md p-6">
+                            <h3 class="text-xl font-semibold mb-4 text-blood-red">Request Tracking</h3>
+                            <div class="space-y-4">
+                                <div class="border-l-4 border-yellow-400 pl-4">
+                                    <div class="font-semibold text-sm">REQ-2024-001</div>
+                                    <div class="text-xs text-gray-600">B+ Blood - 2 Units</div>
+                                    <div class="text-xs text-yellow-600 font-semibold">Status: Pending</div>
+                                </div>
+                                <div class="border-l-4 border-green-400 pl-4">
+                                    <div class="font-semibold text-sm">REQ-2024-002</div>
+                                    <div class="text-xs text-gray-600">O- Blood - 1 Unit</div>
+                                    <div class="text-xs text-green-600 font-semibold">Status: Fulfilled</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow-md p-6">
+                            <h3 class="text-xl font-semibold mb-4 text-blood-red">Emergency Contacts</h3>
+                            <div class="space-y-3">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 bg-blood-red rounded-full flex items-center justify-center">
+                                        <span class="text-white text-sm">📞</span>
+                                    </div>
+                                    <div>
+                                        <div class="font-semibold text-sm">Emergency Hotline</div>
+                                        <div class="text-xs text-gray-600">+880-1234-567890</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 bg-blood-red rounded-full flex items-center justify-center">
+                                        <span class="text-white text-sm">🏥</span>
+                                    </div>
+                                    <div>
+                                        <div class="font-semibold text-sm">Blood Bank</div>
+                                        <div class="text-xs text-gray-600">+880-9876-543210</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blood Inventory Page -->
+        <div id="inventoryPage" class="page hidden">
+            <div class="max-w-7xl mx-auto px-4 py-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-8">Blood Inventory Dashboard</h1>
+                
+                <!-- Inventory Overview -->
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 mb-8">
+                    <div class="bg-white rounded-lg shadow-md p-4 text-center">
+                        <div class="text-2xl font-bold text-blood-red mb-1">45</div>
+                        <div class="text-sm text-gray-600">A+ Units</div>
+                        <div class="text-xs text-green-600">✓ Good Stock</div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-4 text-center">
+                        <div class="text-2xl font-bold text-blood-red mb-1">23</div>
+                        <div class="text-sm text-gray-600">A- Units</div>
+                        <div class="text-xs text-yellow-600">⚠ Low Stock</div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-4 text-center">
+                        <div class="text-2xl font-bold text-blood-red mb-1">67</div>
+                        <div class="text-sm text-gray-600">B+ Units</div>
+                        <div class="text-xs text-green-600">✓ Good Stock</div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-4 text-center">
+                        <div class="text-2xl font-bold text-blood-red mb-1">12</div>
+                        <div class="text-sm text-gray-600">B- Units</div>
+                        <div class="text-xs text-red-600">⚠ Critical</div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-4 text-center">
+                        <div class="text-2xl font-bold text-blood-red mb-1">34</div>
+                        <div class="text-sm text-gray-600">AB+ Units</div>
+                        <div class="text-xs text-green-600">✓ Good Stock</div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-4 text-center">
+                        <div class="text-2xl font-bold text-blood-red mb-1">8</div>
+                        <div class="text-sm text-gray-600">AB- Units</div>
+                        <div class="text-xs text-red-600">⚠ Critical</div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-4 text-center">
+                        <div class="text-2xl font-bold text-blood-red mb-1">89</div>
+                        <div class="text-sm text-gray-600">O+ Units</div>
+                        <div class="text-xs text-green-600">✓ Good Stock</div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-4 text-center">
+                        <div class="text-2xl font-bold text-blood-red mb-1">15</div>
+                        <div class="text-sm text-gray-600">O- Units</div>
+                        <div class="text-xs text-yellow-600">⚠ Low Stock</div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Expiry Alerts -->
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h2 class="text-2xl font-semibold mb-6 text-blood-red">Expiry Alerts</h2>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg border-l-4 border-red-400">
+                                <div>
+                                    <div class="font-semibold text-sm">Unit ID: BLD-2024-001</div>
+                                    <div class="text-xs text-gray-600">Blood Group: A+ | Expires: Tomorrow</div>
+                                </div>
+                                <span class="text-red-600 font-semibold text-xs">URGENT</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-yellow-50 rounded-lg border-l-4 border-yellow-400">
+                                <div>
+                                    <div class="font-semibold text-sm">Unit ID: BLD-2024-002</div>
+                                    <div class="text-xs text-gray-600">Blood Group: O- | Expires: 3 days</div>
+                                </div>
+                                <span class="text-yellow-600 font-semibold text-xs">WARNING</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-yellow-50 rounded-lg border-l-4 border-yellow-400">
+                                <div>
+                                    <div class="font-semibold text-sm">Unit ID: BLD-2024-003</div>
+                                    <div class="text-xs text-gray-600">Blood Group: B+ | Expires: 5 days</div>
+                                </div>
+                                <span class="text-yellow-600 font-semibold text-xs">WARNING</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Usage Statistics -->
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h2 class="text-2xl font-semibold mb-6 text-blood-red">Usage Statistics</h2>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-700">Today's Usage:</span>
+                                <span class="font-semibold">12 units</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-700">This Week:</span>
+                                <span class="font-semibold">89 units</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-700">This Month:</span>
+                                <span class="font-semibold">356 units</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-700">Most Requested:</span>
+                                <span class="font-semibold text-blood-red">O+ (35%)</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-700">Least Available:</span>
+                                <span class="font-semibold text-red-600">AB- (3%)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Inventory Management Actions -->
+                <div class="mt-8 bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-2xl font-semibold mb-6 text-blood-red">Inventory Actions</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <button class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors">Add New Stock</button>
+                        <button class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">Generate Report</button>
+                        <button class="bg-yellow-600 text-white px-6 py-3 rounded-lg hover:bg-yellow-700 transition-colors">Send Alerts</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search & Matching Page -->
+        <div id="searchPage" class="page hidden">
+            <div class="max-w-7xl mx-auto px-4 py-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-8">Search & Matching System</h1>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Search Form -->
+                    <div class="lg:col-span-2">
+                        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                            <h2 class="text-2xl font-semibold mb-6 text-blood-red">Find Donors & Blood Banks</h2>
+                            <form class="space-y-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Blood Group</label>
+                                        <select class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blood-red focus:border-transparent">
+                                            <option value="">All Blood Groups</option>
+                                            <option value="A+">A+</option>
+                                            <option value="A-">A-</option>
+                                            <option value="B+">B+</option>
+                                            <option value="B-">B-</option>
+                                            <option value="AB+">AB+</option>
+                                            <option value="AB-">AB-</option>
+                                            <option value="O+">O+</option>
+                                            <option value="O-">O-</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                                        <input type="text" placeholder="Enter city or area" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blood-red focus:border-transparent">
+                                    </div>
+                                </div>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Search Type</label>
+                                        <select class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blood-red focus:border-transparent">
+                                            <option value="donors">Donors</option>
+                                            <option value="bloodbanks">Blood Banks</option>
+                                            <option value="both">Both</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Distance (km)</label>
+                                        <select class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blood-red focus:border-transparent">
+                                            <option value="5">Within 5 km</option>
+                                            <option value="10">Within 10 km</option>
+                                            <option value="25">Within 25 km</option>
+                                            <option value="50">Within 50 km</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="available" class="mr-2">
+                                    <label for="available" class="text-sm text-gray-700">Only show available donors (eligible to donate)</label>
+                                </div>
+
+                                <button type="submit" class="w-full bg-blood-red text-white py-3 rounded-lg font-semibold hover:bg-blood-dark transition-colors">Search Now</button>
+                            </form>
+                        </div>
+
+                        <!-- Search Results -->
+                        <div class="bg-white rounded-lg shadow-md p-6">
+                            <h3 class="text-xl font-semibold mb-4 text-blood-red">Search Results</h3>
+                            <div class="space-y-4">
+                                <div class="border rounded-lg p-4 hover:bg-gray-50">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <h4 class="font-semibold">Ahmed Rahman</h4>
+                                            <p class="text-sm text-gray-600">Blood Group: O+ | Age: 28</p>
+                                            <p class="text-sm text-gray-600">Location: Dhanmondi, Dhaka | Distance: 2.3 km</p>
+                                            <p class="text-sm text-green-600">✓ Available to donate</p>
+                                        </div>
+                                        <div class="flex space-x-2">
+                                            <button class="bg-blood-red text-white px-3 py-1 rounded text-sm hover:bg-blood-dark">Contact</button>
+                                            <button class="border border-blood-red text-blood-red px-3 py-1 rounded text-sm hover:bg-blood-light">View Profile</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="border rounded-lg p-4 hover:bg-gray-50">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <h4 class="font-semibold">Dhaka Medical College Blood Bank</h4>
+                                            <p class="text-sm text-gray-600">Available: O+ (15 units), A+ (8 units), B+ (12 units)</p>
+                                            <p class="text-sm text-gray-600">Location: Shahbagh, Dhaka | Distance: 4.1 km</p>
+                                            <p class="text-sm text-blue-600">🏥 Blood Bank</p>
+                                        </div>
+                                        <div class="flex space-x-2">
+                                            <button class="bg-blood-red text-white px-3 py-1 rounded text-sm hover:bg-blood-dark">Contact</button>
+                                            <button class="border border-blood-red text-blood-red px-3 py-1 rounded text-sm hover:bg-blood-light">View Details</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="border rounded-lg p-4 hover:bg-gray-50">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <h4 class="font-semibold">Fatima Khatun</h4>
+                                            <p class="text-sm text-gray-600">Blood Group: O+ | Age: 32</p>
+                                            <p class="text-sm text-gray-600">Location: Gulshan, Dhaka | Distance: 6.8 km</p>
+                                            <p class="text-sm text-yellow-600">⏳ Next eligible: 15 days</p>
+                                        </div>
+                                        <div class="flex space-x-2">
+                                            <button class="bg-gray-400 text-white px-3 py-1 rounded text-sm cursor-not-allowed">Not Available</button>
+                                            <button class="border border-blood-red text-blood-red px-3 py-1 rounded text-sm hover:bg-blood-light">View Profile</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI Matching & Quick Actions -->
+                    <div class="space-y-6">
+                        <div class="bg-white rounded-lg shadow-md p-6">
+                            <h3 class="text-xl font-semibold mb-4 text-blood-red">AI Smart Matching</h3>
+                            <div class="space-y-4">
+                                <div class="p-3 bg-blue-50 rounded-lg border-l-4 border-blue-400">
+                                    <div class="font-semibold text-sm">Emergency Match Found!</div>
+                                    <div class="text-xs text-gray-600">3 O- donors within 5km available for critical request</div>
+                                    <button class="mt-2 bg-blue-600 text-white px-3 py-1 rounded text-xs hover:bg-blue-700">Notify Donors</button>
+                                </div>
+                                <div class="p-3 bg-green-50 rounded-lg border-l-4 border-green-400">
+                                    <div class="font-semibold text-sm">Perfect Match</div>
+                                    <div class="text-xs text-gray-600">12 A+ donors available in your area</div>
+                                    <button class="mt-2 bg-green-600 text-white px-3 py-1 rounded text-xs hover:bg-green-700">View All</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow-md p-6">
+                            <h3 class="text-xl font-semibold mb-4 text-blood-red">Quick Actions</h3>
+                            <div class="space-y-3">
+                                <button class="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition-colors">Emergency Alert</button>
+                                <button class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">Bulk SMS to Donors</button>
+                                <button class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors">Schedule Campaign</button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow-md p-6">
+                            <h3 class="text-xl font-semibold mb-4 text-blood-red">Map View</h3>
+                            <div class="bg-gray-200 h-48 rounded-lg flex items-center justify-center">
+                                <div class="text-center text-gray-600">
+                                    <div class="text-4xl mb-2">🗺️</div>
+                                    <div class="text-sm">Interactive Map</div>
+                                    <div class="text-xs">Showing donors and blood banks</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- About Page -->
+        <div id="aboutPage" class="page hidden">
+            <div class="max-w-7xl mx-auto px-4 py-8">
+                <!-- Mission & Vision -->
+                <section class="text-center mb-16">
+                    <h1 class="text-4xl font-bold text-gray-800 mb-6">About BloodConnect</h1>
+                    <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+                        We are dedicated to saving lives by connecting blood donors with those in need through innovative technology and community engagement.
+                    </p>
+                </section>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+                    <div class="bg-white rounded-lg shadow-md p-8">
+                        <h2 class="text-2xl font-bold text-blood-red mb-4">Our Mission</h2>
+                        <p class="text-gray-600 leading-relaxed">
+                            To create a seamless, efficient, and reliable blood donation ecosystem that ensures no life is lost due to blood shortage. We leverage technology to bridge the gap between donors and recipients, making blood donation accessible, transparent, and impactful.
+                        </p>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-md p-8">
+                        <h2 class="text-2xl font-bold text-blood-red mb-4">Our Vision</h2>
+                        <p class="text-gray-600 leading-relaxed">
+                            A world where every person in need of blood receives it on time. We envision a future where blood donation is a celebrated act of humanity, supported by cutting-edge technology and a compassionate community of donors.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Impact Statistics -->
+                <section class="bg-blood-light rounded-lg p-8 mb-16">
+                    <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Our Impact</h2>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                        <div>
+                            <div class="text-4xl font-bold text-blood-red mb-2">50,000+</div>
+                            <div class="text-gray-600">Lives Saved</div>
+                        </div>
+                        <div>
+                            <div class="text-4xl font-bold text-blood-red mb-2">25,000+</div>
+                            <div class="text-gray-600">Active Donors</div>
+                        </div>
+                        <div>
+                            <div class="text-4xl font-bold text-blood-red mb-2">500+</div>
+                            <div class="text-gray-600">Partner Hospitals</div>
+                        </div>
+                        <div>
+                            <div class="text-4xl font-bold text-blood-red mb-2">50+</div>
+                            <div class="text-gray-600">Cities Covered</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Team Section -->
+                <section class="mb-16">
+                    <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Our Team</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                            <div class="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center">
+                                <span class="text-3xl">👨‍⚕️</span>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2">Dr. Rahman Ahmed</h3>
+                            <p class="text-blood-red font-medium mb-2">Chief Medical Officer</p>
+                            <p class="text-gray-600 text-sm">15+ years in healthcare and blood banking</p>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                            <div class="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center">
+                                <span class="text-3xl">👩‍💻</span>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2">Sarah Khan</h3>
+                            <p class="text-blood-red font-medium mb-2">Technology Director</p>
+                            <p class="text-gray-600 text-sm">Expert in healthcare technology solutions</p>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                            <div class="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center">
+                                <span class="text-3xl">👨‍💼</span>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2">Mohammad Hassan</h3>
+                            <p class="text-blood-red font-medium mb-2">Operations Manager</p>
+                            <p class="text-gray-600 text-sm">Specialist in community outreach programs</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Partners -->
+                <section class="bg-white rounded-lg shadow-md p-8">
+                    <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Our Partners</h2>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 items-center">
+                        <div class="text-center">
+                            <div class="text-4xl mb-2">🏥</div>
+                            <div class="text-sm font-semibold">Dhaka Medical College</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl mb-2">🏥</div>
+                            <div class="text-sm font-semibold">Bangabandhu Hospital</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl mb-2">🏥</div>
+                            <div class="text-sm font-semibold">Square Hospital</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl mb-2">🏥</div>
+                            <div class="text-sm font-semibold">Apollo Hospital</div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- Contact Page -->
+        <div id="contactPage" class="page hidden">
+            <div class="max-w-7xl mx-auto px-4 py-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Contact Us</h1>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <!-- Contact Form -->
+                    <div class="bg-white rounded-lg shadow-md p-8">
+                        <h2 class="text-2xl font-semibold mb-6 text-blood-red">Get in Touch</h2>
+                        <form class="space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                                    <input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blood-red focus:border-transparent" required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                                    <input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blood-red focus:border-transparent" required>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                                <input type="email" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blood-red focus:border-transparent" required>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                                <input type="tel" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blood-red focus:border-transparent">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+                                <select class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blood-red focus:border-transparent" required>
+                                    <option value="">Select Subject</option>
+                                    <option value="general">General Inquiry</option>
+                                    <option value="support">Technical Support</option>
+                                    <option value="partnership">Partnership</option>
+                                    <option value="feedback">Feedback</option>
+                                    <option value="emergency">Emergency</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                                <textarea class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blood-red focus:border-transparent" rows="5" required></textarea>
+                            </div>
+                            
+                            <button type="submit" class="w-full bg-blood-red text-white py-3 rounded-lg font-semibold hover:bg-blood-dark transition-colors">Send Message</button>
+                        </form>
+                    </div>
+                    
+                    <!-- Contact Information -->
+                    <div class="space-y-8">
+                        <div class="bg-white rounded-lg shadow-md p-8">
+                            <h3 class="text-xl font-semibold mb-6 text-blood-red">Contact Information</h3>
+                            <div class="space-y-4">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-10 h-10 bg-blood-red rounded-full flex items-center justify-center">
+                                        <span class="text-white">📍</span>
+                                    </div>
+                                    <div>
+                                        <div class="font-semibold">Address</div>
+                                        <div class="text-gray-600">123 Health Street, Dhanmondi, Dhaka-1205, Bangladesh</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-10 h-10 bg-blood-red rounded-full flex items-center justify-center">
+                                        <span class="text-white">📞</span>
+                                    </div>
+                                    <div>
+                                        <div class="font-semibold">Phone</div>
+                                        <div class="text-gray-600">+880-1234-567890</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-10 h-10 bg-blood-red rounded-full flex items-center justify-center">
+                                        <span class="text-white">✉️</span>
+                                    </div>
+                                    <div>
+                                        <div class="font-semibold">Email</div>
+                                        <div class="text-gray-600">info@bloodconnect.org</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-10 h-10 bg-blood-red rounded-full flex items-center justify-center">
+                                        <span class="text-white">🕒</span>
+                                    </div>
+                                    <div>
+                                        <div class="font-semibold">Hours</div>
+                                        <div class="text-gray-600">24/7 Emergency Support</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg shadow-md p-8">
+                            <h3 class="text-xl font-semibold mb-6 text-blood-red">Emergency Contacts</h3>
+                            <div class="space-y-3">
+                                <div class="p-3 bg-red-50 rounded-lg border-l-4 border-red-400">
+                                    <div class="font-semibold text-red-800">Emergency Hotline</div>
+                                    <div class="text-red-600">+880-999-BLOOD (25663)</div>
+                                </div>
+                                <div class="p-3 bg-blue-50 rounded-lg border-l-4 border-blue-400">
+                                    <div class="font-semibold text-blue-800">WhatsApp Support</div>
+                                    <div class="text-blue-600">+880-1234-567890</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg shadow-md p-8">
+                            <h3 class="text-xl font-semibold mb-6 text-blood-red">Follow Us</h3>
+                            <div class="flex space-x-4">
+                                <button class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-blue-700">f</button>
+                                <button class="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center text-white hover:bg-blue-500">t</button>
+                                <button class="w-10 h-10 bg-pink-600 rounded-full flex items-center justify-center text-white hover:bg-pink-700">i</button>
+                                <button class="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center text-white hover:bg-green-700">w</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Notification Panel -->
+    <div id="notificationPanel" class="fixed top-16 right-4 w-80 bg-white rounded-lg shadow-lg border hidden z-50">
+        <div class="p-4 border-b">
+            <h3 class="font-semibold text-gray-800">Notifications</h3>
+        </div>
+        <div class="max-h-96 overflow-y-auto">
+            <div class="p-4 border-b hover:bg-gray-50">
+                <div class="flex items-start space-x-3">
+                    <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
+                        <span class="text-red-600 text-sm">🚨</span>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-semibold">Urgent Blood Request</p>
+                        <p class="text-xs text-gray-600">O- blood needed at Dhaka Medical College</p>
+                        <p class="text-xs text-gray-400">2 minutes ago</p>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 border-b hover:bg-gray-50">
+                <div class="flex items-start space-x-3">
+                    <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                        <span class="text-green-600 text-sm">✅</span>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-semibold">Donation Successful</p>
+                        <p class="text-xs text-gray-600">Thank you for your donation!</p>
+                        <p class="text-xs text-gray-400">1 hour ago</p>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 hover:bg-gray-50">
+                <div class="flex items-start space-x-3">
+                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                        <span class="text-blue-600 text-sm">📅</span>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-semibold">Donation Reminder</p>
+                        <p class="text-xs text-gray-600">You're eligible to donate again</p>
+                        <p class="text-xs text-gray-400">3 hours ago</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Chat Widget -->
+    <div class="fixed bottom-4 right-4 z-50">
+        <button onclick="toggleChat()" class="bg-blood-red text-white p-4 rounded-full shadow-lg hover:bg-blood-dark transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+            </svg>
+        </button>
+    </div>
+
+    <script>
+        // Global state
+        let currentPage = 'login';
+        let currentLanguage = 'en';
+        let isLoggedIn = false;
+        let currentUser = null;
+        
+        // Language translations
+        const translations = {
+            en: {
+                title: "Saving Lives Through Blood Donation",
+                registerDonor: "Register as Donor",
+                requestBlood: "Request Blood"
+            },
+            bn: {
+                title: "রক্তদানের মাধ্যমে জীবন রক্ষা",
+                registerDonor: "দাতা হিসেবে নিবন্ধন",
+                requestBlood: "রক্তের অনুরোধ"
+            }
+        };
+
+        // Authentication functions
+        function login(email, password, role = null) {
+            // Simulate login process
+            const userData = {
+                name: "John Doe",
+                email: email,
+                role: role || "donor",
+                id: "USR-" + Math.floor(Math.random() * 10000)
+            };
+            
+            currentUser = userData;
+            isLoggedIn = true;
+            
+            // Update UI
+            updateAuthUI();
+            showPage('dashboard');
+            
+            // Show success message
+            showNotification("Login successful! Welcome back, " + userData.name, "success");
+        }
+
+        function logout() {
+            currentUser = null;
+            isLoggedIn = false;
+            updateAuthUI();
+            showPage('login');
+            showNotification("You have been logged out successfully.", "info");
+        }
+
+        function updateAuthUI() {
+            const authButtons = document.getElementById('authButtons');
+            const userMenu = document.getElementById('userMenu');
+            const mainNav = document.getElementById('mainNav');
+            const publicNav = document.getElementById('publicNav');
+            
+            if (isLoggedIn && currentUser) {
+                // Hide auth buttons, show user menu and main nav
+                authButtons.classList.add('hidden');
+                userMenu.classList.remove('hidden');
+                userMenu.classList.add('flex');
+                mainNav.classList.remove('hidden');
+                mainNav.classList.add('flex');
+                publicNav.classList.add('hidden');
+                
+                // Update user info
+                document.getElementById('userName').textContent = currentUser.name;
+                document.getElementById('userInitials').textContent = getInitials(currentUser.name);
+                document.getElementById('dashboardUserName').textContent = currentUser.name;
+            } else {
+                // Show auth buttons, hide user menu and main nav
+                authButtons.classList.remove('hidden');
+                userMenu.classList.add('hidden');
+                mainNav.classList.add('hidden');
+                publicNav.classList.remove('hidden');
+                publicNav.classList.add('flex');
+            }
+        }
+
+        function getInitials(name) {
+            return name.split(' ').map(n => n[0]).join('').toUpperCase();
+        }
+
+        // Page navigation
+        function showPage(pageId) {
+            // Check authentication for protected pages
+            const protectedPages = ['dashboard', 'donor', 'request', 'inventory', 'search'];
+            if (protectedPages.includes(pageId) && !isLoggedIn) {
+                showPage('login');
+                showNotification("Please login to access this page.", "warning");
+                return;
+            }
+            
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.add('hidden');
+            });
+            
+            // Show selected page
+            const targetPage = document.getElementById(pageId + 'Page');
+            if (targetPage) {
+                targetPage.classList.remove('hidden');
+                targetPage.classList.add('fade-in');
+            }
+            
+            currentPage = pageId;
+        }
+
+        // Role selection for signup
+        function selectRole(role) {
+            document.getElementById('selectedRole').value = role;
+            
+            // Update UI based on role
+            document.querySelectorAll('.role-btn').forEach(btn => {
+                btn.classList.remove('border-blood-red', 'bg-blood-light');
+                btn.classList.add('border-gray-200');
+            });
+            
+            event.target.closest('.role-btn').classList.remove('border-gray-200');
+            event.target.closest('.role-btn').classList.add('border-blood-red', 'bg-blood-light');
+            
+            // Show/hide relevant fields
+            const bloodGroupField = document.getElementById('bloodGroupField');
+            const organizationField = document.getElementById('organizationField');
+            
+            if (role === 'donor') {
+                bloodGroupField.classList.remove('hidden');
+                organizationField.classList.add('hidden');
+            } else if (role === 'hospital' || role === 'bloodbank') {
+                bloodGroupField.classList.add('hidden');
+                organizationField.classList.remove('hidden');
+            }
+        }
+
+        // Quick login functions
+        function loginWithRole(role) {
+            const email = role === 'donor' ? 'donor@example.com' : 'hospital@example.com';
+            login(email, 'password', role);
+        }
+
+        // Password visibility toggle
+        function togglePassword(fieldId) {
+            const field = document.getElementById(fieldId);
+            const type = field.getAttribute('type') === 'password' ? 'text' : 'password';
+            field.setAttribute('type', type);
+        }
+
+        // User dropdown
+        function toggleUserDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('hidden');
+        }
+
+        // Profile and settings
+        function showProfile() {
+            alert('Profile page will be implemented. Current user: ' + currentUser.name);
+        }
+
+        function showSettings() {
+            alert('Settings page will be implemented.');
+        }
+
+        // Notification system
+        function showNotifications() {
+            const panel = document.getElementById('notificationPanel');
+            panel.classList.toggle('hidden');
+        }
+
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 slide-in ${
+                type === 'success' ? 'bg-green-500 text-white' :
+                type === 'error' ? 'bg-red-500 text-white' :
+                type === 'warning' ? 'bg-yellow-500 text-white' :
+                'bg-blue-500 text-white'
+            }`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Forgot password
+        function showForgotPassword() {
+            const email = prompt('Enter your email address to reset password:');
+            if (email) {
+                showNotification('Password reset link sent to ' + email, 'success');
+            }
+        }
+
+        // Language switching
+        function changeLanguage() {
+            const select = document.getElementById('languageSelect');
+            currentLanguage = select.value;
+            
+            // Update text content based on language
+            if (currentLanguage === 'bn') {
+                document.querySelector('h1').textContent = translations.bn.title;
+            } else {
+                document.querySelector('h1').textContent = translations.en.title;
+            }
+        }
+
+        // Form submissions
+        document.addEventListener('DOMContentLoaded', function() {
+            // Login form
+            const loginForm = document.getElementById('loginForm');
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const email = document.getElementById('loginEmail').value;
+                    const password = document.getElementById('loginPassword').value;
+                    
+                    if (email && password) {
+                        login(email, password);
+                    } else {
+                        showNotification('Please fill in all fields.', 'error');
+                    }
+                });
+            }
+
+            // Signup form
+            const signupForm = document.getElementById('signupForm');
+            if (signupForm) {
+                signupForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const role = document.getElementById('selectedRole').value;
+                    const password = document.getElementById('signupPassword').value;
+                    const confirmPassword = document.getElementById('confirmPassword').value;
+                    
+                    if (!role) {
+                        showNotification('Please select a role.', 'error');
+                        return;
+                    }
+                    
+                    if (password !== confirmPassword) {
+                        showNotification('Passwords do not match.', 'error');
+                        return;
+                    }
+                    
+                    // Simulate successful registration
+                    showNotification('Account created successfully! Please login.', 'success');
+                    showPage('login');
+                });
+            }
+
+            // Donor form
+            const donorForm = document.getElementById('donorForm');
+            if (donorForm) {
+                donorForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    showNotification('Donor registration submitted successfully!', 'success');
+                });
+            }
+
+            // Request form
+            const requestForm = document.getElementById('requestForm');
+            if (requestForm) {
+                requestForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const requestId = 'REQ-2024-' + Math.floor(Math.random() * 1000);
+                    showNotification('Blood request submitted! Request ID: ' + requestId, 'success');
+                });
+            }
+        });
+
+        // Chat functionality
+        function toggleChat() {
+            showNotification('Live chat will be available soon! Call: +880-999-BLOOD', 'info');
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+            const userDropdown = document.getElementById('userDropdown');
+            const notificationPanel = document.getElementById('notificationPanel');
+            
+            if (!event.target.closest('#userMenu')) {
+                userDropdown.classList.add('hidden');
+            }
+            
+            if (!event.target.closest('#notificationPanel') && !event.target.closest('button[onclick="showNotifications()"]')) {
+                notificationPanel.classList.add('hidden');
+            }
+        });
+
+        // Initialize
+        updateAuthUI();
+        showPage('login');
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97a0b31e64a2ded3',t:'MTc1NzAyMjU5Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
