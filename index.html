@@ -1,2209 +1,1205 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Life Saver BD - রক্ত ব্যবস্থাপনা সিস্টেম</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <title>Life Saver BD - Save Lives Through Blood Donation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root {
-            --primary-red: #dc3545;
-            --primary-blue: #0066cc;
-            --success-green: #28a745;
-            --warning-orange: #ffc107;
-            --danger-red: #dc3545;
-            --dark-bg: #1a1a1a;
-            --light-bg: #ffffff;
-            --card-bg: #f8f9fa;
-            --text-dark: #333333;
-            --border-color: #dee2e6;
-        }
-
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: var(--text-dark);
-            background-color: var(--light-bg);
-        }
-
-        html {
             scroll-behavior: smooth;
         }
-
-        /* Navigation */
-        .navbar {
-            background: rgba(255, 255, 255, 0.95) !important;
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border-color);
-            transition: all 0.3s ease;
-            padding: 1rem 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0f;
+            color: #ffffff;
+            overflow-x: hidden;
         }
-
-        .navbar-brand {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-weight: bold;
-            color: var(--text-dark) !important;
-            text-decoration: none;
-            transition: all 0.3s ease;
+        
+        .gradient-primary {
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 50%, #f87171 100%);
         }
-
-        .brand-icon {
-            width: 45px;
-            height: 45px;
-            background: linear-gradient(135deg, var(--primary-red), var(--primary-blue));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
+        
+        .gradient-secondary {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%);
         }
-
-        .navbar-nav .nav-link {
-            color: var(--text-dark) !important;
-            font-weight: 500;
-            margin: 0 0.5rem;
-            padding: 0.5rem 1rem !important;
-            border-radius: 25px;
-            transition: all 0.3s ease;
-        }
-
-        .navbar-nav .nav-link:hover {
-            background: linear-gradient(135deg, var(--primary-red), var(--primary-blue));
-            color: white !important;
-            transform: translateY(-2px);
-        }
-
-        .navbar-nav .nav-link.active {
-            background: var(--primary-red);
-            color: white !important;
-        }
-
-        /* Page Container */
-        .page-container {
-            min-height: 100vh;
-            padding-top: 100px;
-        }
-
-        .page-content {
-            display: none;
-        }
-
-        .page-content.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Hero Section */
-        .hero-section {
-            background: linear-gradient(135deg, var(--primary-red) 0%, var(--primary-blue) 100%);
-            color: white;
-            padding: 5rem 0;
-            text-align: center;
+        
+        .hero-bg {
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 30%, #16213e 70%, #0f3460 100%);
             position: relative;
             overflow: hidden;
         }
-
-        .hero-section::before {
+        
+        .hero-bg::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><path d="M0,300 Q300,200 600,300 T1200,300 L1200,600 L0,600 Z" fill="rgba(255,255,255,0.1)"/></svg>') no-repeat bottom;
-            background-size: cover;
+            background: 
+                radial-gradient(circle at 25% 25%, rgba(220, 38, 38, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(239, 68, 68, 0.1) 0%, transparent 70%);
+            animation: float 8s ease-in-out infinite;
         }
-
-        .hero-content {
-            position: relative;
-            z-index: 1;
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
+            50% { transform: translateY(-30px) rotate(2deg); opacity: 1; }
         }
-
-        .hero-title {
-            font-size: 4rem;
-            font-weight: bold;
-            margin-bottom: 1.5rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        
+        .glass-morphism {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
-
-        .hero-subtitle {
-            font-size: 1.5rem;
-            opacity: 0.9;
-            margin-bottom: 3rem;
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
-
-        .btn-hero {
-            padding: 1rem 2.5rem;
-            font-size: 1.1rem;
-            font-weight: 600;
-            border-radius: 50px;
-            margin: 0.5rem;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        
+        .neon-glow-red {
+            box-shadow: 
+                0 0 20px rgba(220, 38, 38, 0.6),
+                0 0 40px rgba(220, 38, 38, 0.4),
+                0 0 60px rgba(220, 38, 38, 0.2);
         }
-
-        .btn-hero:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        
+        .neon-glow-blue {
+            box-shadow: 
+                0 0 20px rgba(59, 130, 246, 0.6),
+                0 0 40px rgba(59, 130, 246, 0.4),
+                0 0 60px rgba(59, 130, 246, 0.2);
         }
-
-        /* Quick Action Cards */
-        .quick-actions {
-            padding: 5rem 0;
-            background: var(--card-bg);
+        
+        .hover-lift {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-
-        .action-card {
-            background: white;
-            border-radius: 20px;
-            padding: 3rem 2rem;
-            text-align: center;
-            transition: all 0.3s ease;
-            height: 100%;
-            border: 1px solid var(--border-color);
+        
+        .hover-lift:hover {
+            transform: translateY(-12px) scale(1.02);
+        }
+        
+        .hover-3d {
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.320, 1);
+            transform-style: preserve-3d;
+        }
+        
+        .hover-3d:hover {
+            transform: translateY(-15px) rotateX(10deg) rotateY(5deg);
+        }
+        
+        .counter-box {
+            animation: slideUp 0.8s ease-out, glow-pulse 3s ease-in-out infinite;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        
+        @keyframes glow-pulse {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(220, 38, 38, 0.3);
+                text-shadow: 0 0 10px rgba(220, 38, 38, 0.5);
+            }
+            50% { 
+                box-shadow: 0 0 30px rgba(220, 38, 38, 0.6);
+                text-shadow: 0 0 20px rgba(220, 38, 38, 0.8);
+            }
+        }
+        
+        .testimonial-card {
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
             position: relative;
             overflow: hidden;
         }
-
-        .action-card::before {
+        
+        .testimonial-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.6s;
+        }
+        
+        .testimonial-card:hover::before {
+            left: 100%;
+        }
+        
+        .testimonial-card:hover {
+            transform: translateY(-20px) rotateX(8deg);
+            box-shadow: 0 40px 80px rgba(220, 38, 38, 0.25);
+        }
+        
+        .urgent-banner {
+            background: linear-gradient(90deg, #dc2626, #ef4444, #f87171, #ef4444, #dc2626);
+            background-size: 300% 100%;
+            animation: gradient-shift 4s ease-in-out infinite, scroll-text 30s linear infinite;
+        }
+        
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        @keyframes scroll-text {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 50%, #f87171 100%);
+            border: none;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(220, 38, 38, 0.3);
+        }
+        
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s;
+        }
+        
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(220, 38, 38, 0.5);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid #dc2626;
+            color: #ffffff;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+        
+        .btn-secondary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+            transition: width 0.4s ease;
+            z-index: -1;
+        }
+        
+        .btn-secondary:hover::before {
+            width: 100%;
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 35px rgba(220, 38, 38, 0.4);
+            border-color: #ef4444;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.320, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::after {
             content: '';
             position: absolute;
             top: -50%;
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(220, 53, 69, 0.1), transparent);
-            transform: rotate(45deg);
-            transition: all 0.5s;
+            background: conic-gradient(from 0deg, transparent, rgba(220, 38, 38, 0.1), transparent);
+            animation: rotate-border 6s linear infinite;
             opacity: 0;
+            transition: opacity 0.3s;
         }
-
-        .action-card:hover::before {
+        
+        .feature-card:hover::after {
             opacity: 1;
-            transform: rotate(45deg) translate(50%, 50%);
         }
-
-        .action-card:hover {
-            transform: translateY(-15px);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
-            border-color: var(--primary-red);
+        
+        @keyframes rotate-border {
+            100% { transform: rotate(360deg); }
         }
-
-        .action-icon {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            color: white;
-            margin: 0 auto 2rem;
-            transition: all 0.3s ease;
+        
+        .feature-card:hover {
+            transform: translateY(-15px) scale(1.05);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 30px 60px rgba(220, 38, 38, 0.2);
+        }
+        
+        .campaign-card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.6s ease;
             position: relative;
-            z-index: 1;
+            overflow: hidden;
         }
-
-        .action-icon.red { background: linear-gradient(135deg, var(--primary-red), #e74c3c); }
-        .action-icon.blue { background: linear-gradient(135deg, var(--primary-blue), #0056b3); }
-        .action-icon.green { background: linear-gradient(135deg, var(--success-green), #20c997); }
-        .action-icon.orange { background: linear-gradient(135deg, var(--warning-orange), #fd7e14); }
-
-        /* Statistics */
-        .stats-section {
-            padding: 5rem 0;
-            background: white;
+        
+        .campaign-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.4s;
         }
-
-        .stat-card {
-            text-align: center;
-            padding: 2rem;
-            transition: all 0.3s ease;
-            border-radius: 20px;
-            background: white;
-            border: 1px solid var(--border-color);
-            height: 100%;
+        
+        .campaign-card:hover::before {
+            opacity: 1;
         }
-
-        .stat-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        
+        .campaign-card:hover {
+            transform: translateY(-20px) rotateY(8deg);
+            box-shadow: 0 40px 80px rgba(220, 38, 38, 0.3);
         }
-
-        .stat-number {
-            font-size: 3rem;
-            font-weight: bold;
-            color: var(--primary-red);
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-
-        /* Forms */
-        .form-section {
-            padding: 3rem 0;
-            background: var(--card-bg);
-        }
-
-        .form-container {
-            background: white;
-            border-radius: 20px;
-            padding: 3rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            border: 1px solid var(--border-color);
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-label {
-            font-weight: 600;
-            color: var(--text-dark);
-            margin-bottom: 0.5rem;
-        }
-
-        .form-control {
-            border-radius: 10px;
-            border: 2px solid var(--border-color);
-            padding: 0.75rem 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .form-control:focus {
-            border-color: var(--primary-red);
-            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
-        }
-
-        .form-select {
-            border-radius: 10px;
-            border: 2px solid var(--border-color);
-            padding: 0.75rem 1rem;
-        }
-
-        /* Emergency Request Styles */
-        .emergency-gradient {
-            background: linear-gradient(135deg, #dc3545, #ff6b6b);
-            color: white;
-        }
-
-        .urgent-blink {
-            animation: urgentBlink 1s infinite alternate;
-        }
-
-        @keyframes urgentBlink {
-            0% { opacity: 1; }
-            100% { opacity: 0.7; }
-        }
-
-        /* Inventory Styles */
-        .inventory-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            padding: 2rem 0;
-        }
-
-        .blood-group-card {
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            text-align: center;
-            border: 2px solid var(--border-color);
-            transition: all 0.3s ease;
-        }
-
-        .blood-group-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-        }
-
-        .blood-group-card.critical {
-            border-color: var(--danger-red);
-            background: linear-gradient(135deg, rgba(220, 53, 69, 0.1), rgba(255, 255, 255, 1));
-        }
-
-        .blood-group-card.low {
-            border-color: var(--warning-orange);
-            background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 255, 255, 1));
-        }
-
-        .blood-group-card.adequate {
-            border-color: var(--success-green);
-            background: linear-gradient(135deg, rgba(40, 167, 69, 0.1), rgba(255, 255, 255, 1));
-        }
-
-        .blood-type {
-            font-size: 3rem;
-            font-weight: bold;
-            color: var(--primary-red);
-            margin-bottom: 1rem;
-        }
-
-        .stock-amount {
-            font-size: 2rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-
-        .stock-status {
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-        }
-
-        .status-critical {
-            background: var(--danger-red);
-            color: white;
-        }
-
-        .status-low {
-            background: var(--warning-orange);
-            color: white;
-        }
-
-        .status-adequate {
-            background: var(--success-green);
-            color: white;
-        }
-
-        /* Match Results */
-        .donor-card {
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
-            margin-bottom: 1rem;
-        }
-
-        .donor-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-            border-color: var(--primary-red);
-        }
-
-        .donor-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .donor-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary-red), var(--primary-blue));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-
-        .availability-badge {
-            padding: 0.25rem 0.75rem;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .available {
-            background: var(--success-green);
-            color: white;
-        }
-
-        .unavailable {
-            background: var(--danger-red);
-            color: white;
-        }
-
-        /* Compatibility Chart */
-        .compatibility-chart {
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            margin: 2rem 0;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .compatibility-table {
+        
+        .floating-particles {
+            position: absolute;
             width: 100%;
-            border-collapse: collapse;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
         }
-
-        .compatibility-table th,
-        .compatibility-table td {
-            padding: 1rem;
-            text-align: center;
-            border: 1px solid var(--border-color);
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(220, 38, 38, 0.6);
+            border-radius: 50%;
+            animation: float-particle 15s infinite linear;
         }
-
-        .compatibility-table th {
-            background: var(--primary-red);
-            color: white;
-            font-weight: 600;
+        
+        .particle:nth-child(2) { 
+            background: rgba(59, 130, 246, 0.6);
+            animation-delay: -5s;
+            left: 20%;
         }
-
-        .can-donate {
-            background: rgba(40, 167, 69, 0.2);
-            color: var(--success-green);
-            font-weight: bold;
+        
+        .particle:nth-child(3) { 
+            background: rgba(239, 68, 68, 0.6);
+            animation-delay: -10s;
+            left: 40%;
         }
-
-        .cannot-donate {
-            background: rgba(220, 53, 69, 0.2);
-            color: var(--danger-red);
+        
+        .particle:nth-child(4) { 
+            background: rgba(96, 165, 250, 0.6);
+            animation-delay: -15s;
+            left: 60%;
         }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero-title {
-                font-size: 2.5rem;
+        
+        .particle:nth-child(5) { 
+            background: rgba(248, 113, 113, 0.6);
+            animation-delay: -20s;
+            left: 80%;
+        }
+        
+        @keyframes float-particle {
+            0% { 
+                transform: translateY(100vh) translateX(0px) rotate(0deg);
+                opacity: 0;
             }
-
-            .hero-subtitle {
-                font-size: 1.2rem;
-            }
-
-            .btn-hero {
-                padding: 0.8rem 2rem;
-                font-size: 1rem;
-            }
-
-            .inventory-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .form-container {
-                padding: 2rem 1rem;
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { 
+                transform: translateY(-100px) translateX(100px) rotate(360deg);
+                opacity: 0;
             }
         }
-
-        /* Utility Classes */
+        
         .text-gradient {
-            background: linear-gradient(135deg, var(--primary-red), var(--primary-blue));
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 50%, #f87171 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 3rem;
+        
+        .header-blur {
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(25px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-
-        .section-title h2 {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 8px;
         }
-
-        .hidden {
-            display: none !important;
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
         }
-
-        /* Loading Animation */
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,.3);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 1s ease-in-out infinite;
+        
+        .nav-link:hover::after {
+            width: 80%;
         }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        
+        .nav-link:hover {
+            color: #ef4444;
+            transform: translateY(-2px);
+            background: rgba(220, 38, 38, 0.1);
+        }
+        
+        .pulse-glow {
+            animation: pulse-glow 2s infinite;
+        }
+        
+        @keyframes pulse-glow {
+            0% { 
+                box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7);
+                transform: scale(1);
+            }
+            70% { 
+                box-shadow: 0 0 0 15px rgba(220, 38, 38, 0);
+                transform: scale(1.05);
+            }
+            100% { 
+                box-shadow: 0 0 0 0 rgba(220, 38, 38, 0);
+                transform: scale(1);
+            }
+        }
+        
+        .info-section {
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
+        }
+        
+        .newsletter-bg {
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 50%, #f87171 100%);
+            position: relative;
+        }
+        
+        .newsletter-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+        }
+        
+        .footer-bg {
+            background: linear-gradient(135deg, #000000 0%, #1a1a2e 50%, #0a0a0f 100%);
+        }
+        
+        .social-icon {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .social-icon:hover {
+            transform: translateY(-8px) scale(1.1);
+        }
+        
+        .modal-backdrop {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+        }
+        
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #dc2626, #ef4444, #f87171);
+            transform-origin: left;
+            transform: scaleX(0);
+            z-index: 9999;
+            transition: transform 0.1s ease;
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="#" onclick="showPage('home')">
-                <div class="brand-icon">
-                    <i class="fas fa-tint"></i>
-                </div>
-                <span>Life Saver BD</span>
-            </a>
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#" onclick="showPage('home')">হোম</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showPage('register')">নিবন্ধন</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showPage('request')">জরুরি অনুরোধ</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showPage('inventory')">মজুদ তালিকা</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showPage('match')">ম্যাচ খুঁজুন</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showPage('about')">আমাদের সম্পর্কে</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showPage('contact')">যোগাযোগ</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showPage('admin')">অ্যাডমিন</a>
-                    </li>
-                </ul>
-            </div>
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-indicator" id="scrollIndicator"></div>
+    
+    <!-- Floating Particles -->
+    <div class="floating-particles fixed inset-0 pointer-events-none z-0">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- Urgent Alert Banner -->
+    <div class="urgent-banner text-white py-3 overflow-hidden relative z-10">
+        <div class="whitespace-nowrap">
+            <span class="inline-block px-8 font-semibold">
+                🚨 জরুরি: ঢাকা মেডিকেল কলেজ হাসপাতালে O- রক্তের প্রয়োজন
+            </span>
+            <span class="inline-block px-8 font-semibold">
+                🩸 A+ রক্ত প্রয়োজন স্কয়ার হাসপাতালে
+            </span>
+            <span class="inline-block px-8 font-semibold">
+                ⚡ জরুরি: অ্যাপোলো হাসপাতালে B+ রক্তের প্রয়োজন
+            </span>
         </div>
-    </nav>
+    </div>
 
-    <div class="page-container">
-        <!-- Home Page -->
-        <div id="home" class="page-content active">
-            <!-- Hero Section -->
-            <section class="hero-section">
-                <div class="container">
-                    <div class="hero-content">
-                        <h1 class="hero-title">Welcome to Life Saver BD</h1>
-                        <p class="hero-subtitle">রক্তদান করুন, জীবন বাঁচান - একসাথে গড়ি সুস্থ বাংলাদেশ</p>
-                        <div class="hero-buttons">
-                            <button class="btn btn-light btn-hero" onclick="showPage('register')">
-                                <i class="fas fa-heart me-2"></i>
-                                Become a Donor
-                            </button>
-                            <button class="btn btn-outline-light btn-hero urgent-blink" onclick="showPage('request')">
-                                <i class="fas fa-exclamation-triangle me-2"></i>
-                                Emergency Request
-                            </button>
-                        </div>
+    <!-- Header -->
+    <header class="header-blur sticky top-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-6">
+            <div class="flex justify-between items-center py-4">
+                <!-- Logo -->
+                <div class="flex items-center space-x-4">
+                    <div class="w-14 h-14 neon-glow-red rounded-2xl flex items-center justify-center pulse-glow gradient-primary">
+                        <i class="fas fa-heart text-white text-2xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gradient">Life Saver BD</h1>
+                        <p class="text-xs text-gray-400 font-medium">জীবন বাঁচান, আশা দিন</p>
                     </div>
                 </div>
-            </section>
 
-            <!-- Quick Actions -->
-            <section class="quick-actions">
-                <div class="container">
-                    <div class="section-title">
-                        <h2 class="text-gradient">Quick Actions</h2>
-                        <p>আপনার প্রয়োজন অনুযায়ী সেবা বেছে নিন</p>
-                    </div>
-                    
-                    <div class="row g-4">
-                        <div class="col-lg-3 col-md-6">
-                            <div class="action-card">
-                                <div class="action-icon red">
-                                    <i class="fas fa-user-plus"></i>
-                                </div>
-                                <h4>Register as Donor</h4>
-                                <p>রক্তদাতা হিসেবে নিবন্ধন করুন এবং জীবন বাঁচানোর মহান কাজে অংশ নিন</p>
-                                <button class="btn btn-danger mt-3" onclick="showPage('register')">
-                                    নিবন্ধন করুন
-                                </button>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <div class="action-card">
-                                <div class="action-icon orange">
-                                    <i class="fas fa-exclamation-circle"></i>
-                                </div>
-                                <h4>Emergency Request</h4>
-                                <p>জরুরি রক্তের প্রয়োজনে তাৎক্ষণিক অনুরোধ পাঠান</p>
-                                <button class="btn btn-warning mt-3" onclick="showPage('request')">
-                                    জরুরি অনুরোধ
-                                </button>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <div class="action-card">
-                                <div class="action-icon blue">
-                                    <i class="fas fa-clipboard-list"></i>
-                                </div>
-                                <h4>Check Inventory</h4>
-                                <p>বিভিন্ন ব্লাড ব্যাংকে রক্তের মজুদ পরিস্থিতি দেখুন</p>
-                                <button class="btn btn-primary mt-3" onclick="showPage('inventory')">
-                                    মজুদ দেখুন
-                                </button>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <div class="action-card">
-                                <div class="action-icon green">
-                                    <i class="fas fa-search"></i>
-                                </div>
-                                <h4>Find Match</h4>
-                                <p>আপনার প্রয়োজনীয় রক্তের গ্রুপের ডোনার খুঁজে পান</p>
-                                <button class="btn btn-success mt-3" onclick="showPage('match')">
-                                    ম্যাচ খুঁজুন
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                <!-- Desktop Navigation -->
+                <nav class="hidden lg:flex items-center space-x-2">
+                    <a href="#home" class="nav-link text-white font-medium">Home</a>
+                    <a href="#about" class="nav-link text-white font-medium">About Us</a>
+                    <a href="#contact" class="nav-link text-white font-medium">Contact Us</a>
+                    <a href="#login" class="nav-link text-white font-medium">Login</a>
+                    <a href="#register" class="btn-primary text-white px-8 py-3 rounded-full font-semibold ml-4">
+                        Register
+                    </a>
+                </nav>
+
+                <!-- Controls -->
+                <div class="flex items-center space-x-4">
+                    <!-- Language Toggle -->
+                    <button id="langToggle" class="glass-morphism flex items-center space-x-2 px-4 py-2 rounded-full hover-lift">
+                        <span class="text-sm font-semibold text-white" id="currentLang">EN</span>
+                        <i class="fas fa-globe text-sm text-white"></i>
+                    </button>
+
+                    <!-- Dark Mode Toggle -->
+                    <button id="themeToggle" class="glass-morphism p-3 rounded-full hover-lift">
+                        <i class="fas fa-moon text-white"></i>
+                    </button>
+
+                    <!-- Mobile Menu Button -->
+                    <button id="mobileMenuBtn" class="lg:hidden glass-morphism p-3 rounded-xl hover-lift">
+                        <i class="fas fa-bars text-white"></i>
+                    </button>
                 </div>
-            </section>
-
-            <!-- Statistics -->
-            <section class="stats-section">
-                <div class="container">
-                    <div class="section-title">
-                        <h2>Our Impact</h2>
-                        <p>আমাদের সাফল্যের পরিসংখ্যান</p>
-                    </div>
-                    
-                    <div class="row g-4">
-                        <div class="col-lg-3 col-md-6">
-                            <div class="stat-card">
-                                <span class="stat-number">15,420</span>
-                                <div class="stat-label">নিবন্ধিত ডোনার</div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <div class="stat-card">
-                                <span class="stat-number">12,300</span>
-                                <div class="stat-label">সংগৃহীত ইউনিট</div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <div class="stat-card">
-                                <span class="stat-number">8,750</span>
-                                <div class="stat-label">বাঁচানো জীবন</div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <div class="stat-card">
-                                <span class="stat-number">200</span>
-                                <div class="stat-label">সহযোগী হাসপাতাল</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <!-- Register Page -->
-        <div id="register" class="page-content">
-            <section class="form-section">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-8">
-                            <div class="form-container">
-                                <div class="text-center mb-4">
-                                    <h2 class="text-gradient">ডোনার নিবন্ধন</h2>
-                                    <p>রক্তদাতা হিসেবে নিবন্ধন করুন এবং জীবন বাঁচানোর মহান কাজে অংশ নিন</p>
-                                </div>
-                                
-                                <form id="donorRegistrationForm">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">পূর্ণ নাম *</label>
-                                                <input type="text" class="form-control" name="name" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">মোবাইল নম্বর *</label>
-                                                <input type="tel" class="form-control" name="phone" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">ইমেইল</label>
-                                                <input type="email" class="form-control" name="email">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">রক্তের গ্রুপ *</label>
-                                                <select class="form-select" name="bloodGroup" required>
-                                                    <option value="">নির্বাচন করুন</option>
-                                                    <option value="A+">A+</option>
-                                                    <option value="A-">A-</option>
-                                                    <option value="B+">B+</option>
-                                                    <option value="B-">B-</option>
-                                                    <option value="AB+">AB+</option>
-                                                    <option value="AB-">AB-</option>
-                                                    <option value="O+">O+</option>
-                                                    <option value="O-">O-</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">বয়স *</label>
-                                                <input type="number" class="form-control" name="age" min="18" max="65" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">ওজন (কেজি) *</label>
-                                                <input type="number" class="form-control" name="weight" min="50" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label class="form-label">সম্পূর্ণ ঠিকানা *</label>
-                                        <textarea class="form-control" name="address" rows="3" required></textarea>
-                                    </div>
-                                    
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">জেলা *</label>
-                                                <select class="form-select" name="district" required>
-                                                    <option value="">নির্বাচন করুন</option>
-                                                    <option value="ঢাকা">ঢাকা</option>
-                                                    <option value="চট্টগ্রাম">চট্টগ্রাম</option>
-                                                    <option value="সিলেট">সিলেট</option>
-                                                    <option value="রাজশাহী">রাজশাহী</option>
-                                                    <option value="খুলনা">খুলনা</option>
-                                                    <option value="বরিশাল">বরিশাল</option>
-                                                    <option value="রংপুর">রংপুর</option>
-                                                    <option value="ময়মনসিংহ">ময়মনসিংহ</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">এলাকা *</label>
-                                                <input type="text" class="form-control" name="area" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label class="form-label">স্বাস্থ্য পরীক্ষা</label>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="healthCheck" value="weight50plus" required>
-                                                    <label class="form-check-label">আমার ওজন ৫০ কেজির বেশি</label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="healthCheck" value="noRecentDonation" required>
-                                                    <label class="form-check-label">গত ৩ মাসে রক্তদান করিনি</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="healthCheck" value="noMajorIllness" required>
-                                                    <label class="form-check-label">কোনো বড় অসুখ নেই</label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="healthCheck" value="agreeTerms" required>
-                                                    <label class="form-check-label">শর্তাবলী মেনে নিচ্ছি</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="text-center">
-                                        <button type="submit" class="btn btn-danger btn-hero">
-                                            <i class="fas fa-user-plus me-2"></i>
-                                            নিবন্ধন সম্পন্ন করুন
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <!-- Request Page -->
-        <div id="request" class="page-content">
-            <section class="form-section emergency-gradient">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-8">
-                            <div class="form-container">
-                                <div class="text-center mb-4">
-                                    <h2 class="text-danger urgent-blink">
-                                        <i class="fas fa-exclamation-triangle me-2"></i>
-                                        জরুরি রক্তের অনুরোধ
-                                    </h2>
-                                    <p>দ্রুত রক্তের ব্যবস্থার জন্য সম্পূর্ণ তথ্য দিন</p>
-                                </div>
-                                
-                                <form id="emergencyRequestForm">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">রোগীর নাম *</label>
-                                                <input type="text" class="form-control" name="patientName" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">প্রয়োজনীয় রক্তের গ্রুপ *</label>
-                                                <select class="form-select" name="requiredBloodGroup" required>
-                                                    <option value="">নির্বাচন করুন</option>
-                                                    <option value="A+">A+</option>
-                                                    <option value="A-">A-</option>
-                                                    <option value="B+">B+</option>
-                                                    <option value="B-">B-</option>
-                                                    <option value="AB+">AB+</option>
-                                                    <option value="AB-">AB-</option>
-                                                    <option value="O+">O+</option>
-                                                    <option value="O-">O-</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">প্রয়োজনীয় পরিমাণ (ব্যাগ) *</label>
-                                                <input type="number" class="form-control" name="requiredUnits" min="1" max="10" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">অগ্রাধিকার *</label>
-                                                <select class="form-select" name="priority" required>
-                                                    <option value="">নির্বাচন করুন</option>
-                                                    <option value="critical">অতি জরুরি (২৪ ঘন্টা)</option>
-                                                    <option value="urgent">জরুরি (৪৮ ঘন্টা)</option>
-                                                    <option value="planned">পরিকল্পিত (১ সপ্তাহ)</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label class="form-label">হাসপাতালের নাম ও ঠিকানা *</label>
-                                        <textarea class="form-control" name="hospitalAddress" rows="3" required></textarea>
-                                    </div>
-                                    
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">যোগাযোগকারীর নাম *</label>
-                                                <input type="text" class="form-control" name="contactName" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">যোগাযোগের নম্বর *</label>
-                                                <input type="tel" class="form-control" name="contactPhone" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label class="form-label">রোগের বিবরণ</label>
-                                        <textarea class="form-control" name="medicalCondition" rows="3" placeholder="রোগীর অবস্থা ও রক্তের প্রয়োজনীয়তার কারণ লিখুন"></textarea>
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label class="form-label">প্রয়োজনের তারিখ ও সময় *</label>
-                                        <input type="datetime-local" class="form-control" name="requiredDateTime" required>
-                                    </div>
-                                    
-                                    <div class="text-center">
-                                        <button type="submit" class="btn btn-danger btn-hero urgent-blink">
-                                            <i class="fas fa-paper-plane me-2"></i>
-                                            জরুরি অনুরোধ পাঠান
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <!-- Inventory Page -->
-        <div id="inventory" class="page-content">
-            <section class="form-section">
-                <div class="container">
-                    <div class="section-title">
-                        <h2 class="text-gradient">রক্তের মজুদ তালিকা</h2>
-                        <p>বিভিন্ন ব্লাড ব্যাংকে রক্তের বর্তমান মজুদ পরিস্থিতি</p>
-                    </div>
-                    
-                    <!-- Filter Options -->
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="form-label">স্ট্যাটাস অনুযায়ী ফিল্টার</label>
-                                <select class="form-select" id="statusFilter" onchange="filterInventory()">
-                                    <option value="all">সব দেখুন</option>
-                                    <option value="critical">জরুরি প্রয়োজন</option>
-                                    <option value="low">কম মজুদ</option>
-                                    <option value="adequate">পর্যাপ্ত মজুদ</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="form-label">রক্তের গ্রুপ খুঁজুন</label>
-                                <input type="text" class="form-control" id="bloodGroupSearch" placeholder="যেমন: A+, B-, O+" onkeyup="searchBloodGroup()">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Inventory Grid -->
-                    <div class="inventory-grid" id="inventoryGrid">
-                        <div class="blood-group-card critical" data-status="critical" data-group="O-">
-                            <div class="blood-type">O-</div>
-                            <div class="stock-amount text-danger">৫ ব্যাগ</div>
-                            <div class="stock-status status-critical">জরুরি প্রয়োজন</div>
-                            <p class="mt-2 mb-0">সর্বনিম্ন: ২০ ব্যাগ</p>
-                            <small class="text-muted">সর্বজনীন দাতা</small>
-                        </div>
-                        
-                        <div class="blood-group-card low" data-status="low" data-group="AB-">
-                            <div class="blood-type">AB-</div>
-                            <div class="stock-amount text-warning">১২ ব্যাগ</div>
-                            <div class="stock-status status-low">কম মজুদ</div>
-                            <p class="mt-2 mb-0">সর্বনিম্ন: ১৫ ব্যাগ</p>
-                            <small class="text-muted">বিরল গ্রুপ</small>
-                        </div>
-                        
-                        <div class="blood-group-card adequate" data-status="adequate" data-group="A+">
-                            <div class="blood-type">A+</div>
-                            <div class="stock-amount text-success">৪৫ ব্যাগ</div>
-                            <div class="stock-status status-adequate">পর্যাপ্ত মজুদ</div>
-                            <p class="mt-2 mb-0">সর্বনিম্ন: ৩০ ব্যাগ</p>
-                            <small class="text-muted">সাধারণ গ্রুপ</small>
-                        </div>
-                        
-                        <div class="blood-group-card adequate" data-status="adequate" data-group="B+">
-                            <div class="blood-type">B+</div>
-                            <div class="stock-amount text-success">৩৮ ব্যাগ</div>
-                            <div class="stock-status status-adequate">পর্যাপ্ত মজুদ</div>
-                            <p class="mt-2 mb-0">সর্বনিম্ন: ২৫ ব্যাগ</p>
-                            <small class="text-muted">সাধারণ গ্রুপ</small>
-                        </div>
-                        
-                        <div class="blood-group-card low" data-status="low" data-group="A-">
-                            <div class="blood-type">A-</div>
-                            <div class="stock-amount text-warning">১৮ ব্যাগ</div>
-                            <div class="stock-status status-low">কম মজুদ</div>
-                            <p class="mt-2 mb-0">সর্বনিম্ন: ২০ ব্যাগ</p>
-                            <small class="text-muted">নেগেটিভ গ্রুপ</small>
-                        </div>
-                        
-                        <div class="blood-group-card adequate" data-status="adequate" data-group="O+">
-                            <div class="blood-type">O+</div>
-                            <div class="stock-amount text-success">৫২ ব্যাগ</div>
-                            <div class="stock-status status-adequate">পর্যাপ্ত মজুদ</div>
-                            <p class="mt-2 mb-0">সর্বনিম্ন: ৪০ ব্যাগ</p>
-                            <small class="text-muted">সর্বাধিক চাহিদা</small>
-                        </div>
-                        
-                        <div class="blood-group-card low" data-status="low" data-group="B-">
-                            <div class="blood-type">B-</div>
-                            <div class="stock-amount text-warning">১৪ ব্যাগ</div>
-                            <div class="stock-status status-low">কম মজুদ</div>
-                            <p class="mt-2 mb-0">সর্বনিম্ন: ১৮ ব্যাগ</p>
-                            <small class="text-muted">নেগেটিভ গ্রুপ</small>
-                        </div>
-                        
-                        <div class="blood-group-card adequate" data-status="adequate" data-group="AB+">
-                            <div class="blood-type">AB+</div>
-                            <div class="stock-amount text-success">২৮ ব্যাগ</div>
-                            <div class="stock-status status-adequate">পর্যাপ্ত মজুদ</div>
-                            <p class="mt-2 mb-0">সর্বনিম্ন: ২০ ব্যাগ</p>
-                            <small class="text-muted">সর্বজনীন গ্রহীতা</small>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <!-- About Page -->
-        <div id="about" class="page-content">
-            <section class="hero-section">
-                <div class="container">
-                    <div class="hero-content">
-                        <h1 class="hero-title">আমাদের সম্পর্কে</h1>
-                        <p class="hero-subtitle">রক্তদানের মাধ্যমে জীবন বাঁচানোর মহান ব্রত</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Mission & Vision -->
-            <section class="stats-section">
-                <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-lg-6">
-                            <h2 class="text-gradient mb-4">আমাদের পরিচয়</h2>
-                            <p class="lead">Life Saver BD একটি অলাভজনক প্ল্যাটফর্ম যা বাংলাদেশে রক্তদান ও রক্ত সংগ্রহের কাজকে আরও সহজ ও কার্যকর করে তুলেছে।</p>
-                            <p>আমাদের মূল লক্ষ্য হলো প্রতিটি রক্তের প্রয়োজনে সঠিক সময়ে সঠিক ব্যক্তির কাছে পৌঁছানো। আমরা বিশ্বাস করি যে, একটি সুসংগঠিত ডিজিটাল প্ল্যাটফর্মের মাধ্যমে আমরা অসংখ্য জীবন বাঁচাতে পারি।</p>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="text-center">
-                                <div class="action-icon red mx-auto mb-4" style="width: 150px; height: 150px; font-size: 4rem;">
-                                    <i class="fas fa-heart"></i>
-                                </div>
-                                <h4>আমাদের মিশন</h4>
-                                <p>প্রতিটি মানুষের জীবন রক্ষায় রক্তদানকে সহজ ও নিরাপদ করে তোলা</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Features -->
-            <section class="quick-actions">
-                <div class="container">
-                    <div class="section-title">
-                        <h2 class="text-gradient">আমাদের সেবাসমূহ</h2>
-                        <p>যেভাবে আমরা জীবন বাঁচানোর কাজে অবদান রাখছি</p>
-                    </div>
-                    
-                    <div class="row g-4">
-                        <div class="col-lg-4 col-md-6">
-                            <div class="action-card">
-                                <div class="action-icon red">
-                                    <i class="fas fa-users"></i>
-                                </div>
-                                <h4>ডোনার নেটওয়ার্ক</h4>
-                                <p>সারাদেশে ১৫,০০০+ নিবন্ধিত রক্তদাতার বিশাল নেটওয়ার্ক</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6">
-                            <div class="action-card">
-                                <div class="action-icon blue">
-                                    <i class="fas fa-clock"></i>
-                                </div>
-                                <h4>২৪/৭ সেবা</h4>
-                                <p>জরুরি প্রয়োজনে যেকোনো সময় রক্তের ব্যবস্থা করার সুবিধা</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6">
-                            <div class="action-card">
-                                <div class="action-icon green">
-                                    <i class="fas fa-shield-alt"></i>
-                                </div>
-                                <h4>নিরাপদ ও যাচাইকৃত</h4>
-                                <p>সকল ডোনারের স্বাস্থ্য পরীক্ষা ও তথ্য যাচাই করা হয়</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6">
-                            <div class="action-card">
-                                <div class="action-icon orange">
-                                    <i class="fas fa-mobile-alt"></i>
-                                </div>
-                                <h4>সহজ ব্যবহার</h4>
-                                <p>মোবাইল ও কম্পিউটার উভয়েই সহজে ব্যবহারযোগ্য ইন্টারফেস</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6">
-                            <div class="action-card">
-                                <div class="action-icon red">
-                                    <i class="fas fa-hospital"></i>
-                                </div>
-                                <h4>হাসপাতাল নেটওয়ার্ক</h4>
-                                <p>২০০+ হাসপাতাল ও ক্লিনিকের সাথে সরাসরি যোগাযোগ</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6">
-                            <div class="action-card">
-                                <div class="action-icon blue">
-                                    <i class="fas fa-chart-line"></i>
-                                </div>
-                                <h4>রিয়েল-টাইম ট্র্যাকিং</h4>
-                                <p>রক্তের মজুদ ও চাহিদার লাইভ আপডেট</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Achievements -->
-            <section class="stats-section">
-                <div class="container">
-                    <div class="section-title">
-                        <h2>আমাদের অর্জন</h2>
-                        <p>গত ৫ বছরে আমাদের সাফল্যের পরিসংখ্যান</p>
-                    </div>
-                    
-                    <div class="row g-4">
-                        <div class="col-lg-3 col-md-6">
-                            <div class="stat-card">
-                                <span class="stat-number">15,420</span>
-                                <div class="stat-label">নিবন্ধিত ডোনার</div>
-                                <small class="text-muted">সারাদেশে</small>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <div class="stat-card">
-                                <span class="stat-number">8,750</span>
-                                <div class="stat-label">বাঁচানো জীবন</div>
-                                <small class="text-muted">সফল রক্তদান</small>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <div class="stat-card">
-                                <span class="stat-number">200</span>
-                                <div class="stat-label">সহযোগী হাসপাতাল</div>
-                                <small class="text-muted">সারাদেশে</small>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <div class="stat-card">
-                                <span class="stat-number">98%</span>
-                                <div class="stat-label">সফলতার হার</div>
-                                <small class="text-muted">জরুরি অনুরোধে</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Team Values -->
-            <section class="quick-actions">
-                <div class="container">
-                    <div class="section-title">
-                        <h2 class="text-gradient">আমাদের মূল্যবোধ</h2>
-                        <p>যে নীতিমালার ভিত্তিতে আমরা কাজ করি</p>
-                    </div>
-                    
-                    <div class="row g-4">
-                        <div class="col-lg-6">
-                            <div class="action-card">
-                                <div class="action-icon red">
-                                    <i class="fas fa-handshake"></i>
-                                </div>
-                                <h4>বিশ্বস্ততা</h4>
-                                <p>প্রতিটি ডোনার ও রোগীর তথ্যের সর্বোচ্চ গোপনীয়তা ও নিরাপত্তা নিশ্চিত করি</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="action-card">
-                                <div class="action-icon blue">
-                                    <i class="fas fa-bolt"></i>
-                                </div>
-                                <h4>দ্রুততা</h4>
-                                <p>জরুরি মুহূর্তে সর্বোচ্চ দ্রুততার সাথে রক্তের ব্যবস্থা করার চেষ্টা করি</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="action-card">
-                                <div class="action-icon green">
-                                    <i class="fas fa-balance-scale"></i>
-                                </div>
-                                <h4>ন্যায্যতা</h4>
-                                <p>জাতি, ধর্ম, বর্ণ নির্বিশেষে সকলের জন্য সমান সেবা প্রদান করি</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="action-card">
-                                <div class="action-icon orange">
-                                    <i class="fas fa-heart"></i>
-                                </div>
-                                <h4>মানবিকতা</h4>
-                                <p>প্রতিটি জীবনের মূল্য দিয়ে মানবিক সেবায় নিবেদিত থাকি</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <!-- Contact Page -->
-        <div id="contact" class="page-content">
-            <section class="hero-section">
-                <div class="container">
-                    <div class="hero-content">
-                        <h1 class="hero-title">যোগাযোগ করুন</h1>
-                        <p class="hero-subtitle">আমরা সর্বদা আপনার সেবায় প্রস্তুত</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Contact Information -->
-            <section class="stats-section">
-                <div class="container">
-                    <div class="row g-4">
-                        <div class="col-lg-3 col-md-6">
-                            <div class="stat-card">
-                                <div class="action-icon red mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2rem;">
-                                    <i class="fas fa-phone-alt"></i>
-                                </div>
-                                <h5>জরুরি হটলাইন</h5>
-                                <p class="text-danger fw-bold fs-4">১৬২৬৩</p>
-                                <small class="text-muted">২৪/৭ উপলব্ধ</small>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <div class="stat-card">
-                                <div class="action-icon blue mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2rem;">
-                                    <i class="fas fa-envelope"></i>
-                                </div>
-                                <h5>ইমেইল</h5>
-                                <p class="fw-bold">info@lifesaverbd.org</p>
-                                <small class="text-muted">২৪ ঘন্টার মধ্যে উত্তর</small>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <div class="stat-card">
-                                <div class="action-icon green mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2rem;">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                </div>
-                                <h5>প্রধান কার্যালয়</h5>
-                                <p>১২৩ কাকরাইল, ঢাকা-১০০০</p>
-                                <small class="text-muted">সকাল ৯টা - সন্ধ্যা ৬টা</small>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <div class="stat-card">
-                                <div class="action-icon orange mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2rem;">
-                                    <i class="fas fa-clock"></i>
-                                </div>
-                                <h5>কার্যসময়</h5>
-                                <p>সোম - শুক্র: ৯:০০ - ১৮:০০</p>
-                                <small class="text-muted">শনি: ৯:০০ - ১৪:০০</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Contact Form -->
-            <section class="form-section">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-8">
-                            <div class="form-container">
-                                <div class="section-title text-start">
-                                    <h3 class="text-gradient">আমাদের বার্তা পাঠান</h3>
-                                    <p>আপনার যেকোনো প্রশ্ন বা পরামর্শ আমাদের জানান</p>
-                                </div>
-                                
-                                <form id="contactForm">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">আপনার নাম *</label>
-                                                <input type="text" class="form-control" name="name" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">ইমেইল ঠিকানা *</label>
-                                                <input type="email" class="form-control" name="email" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">মোবাইল নম্বর</label>
-                                                <input type="tel" class="form-control" name="phone">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">বিষয় *</label>
-                                                <select class="form-select" name="subject" required>
-                                                    <option value="">নির্বাচন করুন</option>
-                                                    <option value="general">সাধারণ জিজ্ঞাসা</option>
-                                                    <option value="technical">কারিগরি সমস্যা</option>
-                                                    <option value="partnership">অংশীদারিত্ব</option>
-                                                    <option value="complaint">অভিযোগ</option>
-                                                    <option value="suggestion">পরামর্শ</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label class="form-label">আপনার বার্তা *</label>
-                                        <textarea class="form-control" name="message" rows="5" required placeholder="আপনার বার্তা এখানে লিখুন..."></textarea>
-                                    </div>
-                                    
-                                    <div class="text-center">
-                                        <button type="submit" class="btn btn-primary btn-hero">
-                                            <i class="fas fa-paper-plane me-2"></i>
-                                            বার্তা পাঠান
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        
-                        <div class="col-lg-4">
-                            <div class="form-container">
-                                <h4 class="text-gradient mb-4">জরুরি যোগাযোগ</h4>
-                                
-                                <div class="mb-4">
-                                    <h6><i class="fas fa-hospital text-danger me-2"></i>জাতীয় হাসপাতাল</h6>
-                                    <p class="mb-1">ঢাকা মেডিকেল: ০২-৮৬২৬৮১২</p>
-                                    <p class="mb-1">বঙ্গবন্ধু মেডিকেল: ০২-৯৬৬৬৭৭১</p>
-                                    <p class="mb-3">স্যার সলিমুল্লাহ: ০২-৭৩১৯৮০২</p>
-                                </div>
-                                
-                                <div class="mb-4">
-                                    <h6><i class="fas fa-tint text-primary me-2"></i>ব্লাড ব্যাংক</h6>
-                                    <p class="mb-1">কেন্দ্রীয় ব্লাড ব্যাংক: ০২-৮৬১৮৯৩৫</p>
-                                    <p class="mb-1">রেড ক্রিসেন্ট: ০২-৯৩৩৬৬৬৬</p>
-                                    <p class="mb-3">কোয়ান্টাম: ০২-৮৪১২৮৯০</p>
-                                </div>
-                                
-                                <div class="mb-4">
-                                    <h6><i class="fas fa-ambulance text-warning me-2"></i>অ্যাম্বুলেন্স সেবা</h6>
-                                    <p class="mb-1">জাতীয় জরুরি সেবা: ৯৯৯</p>
-                                    <p class="mb-1">ঢাকা অ্যাম্বুলেন্স: ১০৬৪৫</p>
-                                    <p class="mb-3">প্রাইভেট অ্যাম্বুলেন্স: ০১৭১৩৩৯৪৯৪৯</p>
-                                </div>
-                                
-                                <div class="alert alert-danger">
-                                    <h6><i class="fas fa-exclamation-triangle me-2"></i>জরুরি নোটিশ</h6>
-                                    <p class="mb-0">জীবন-মৃত্যুর জরুরি অবস্থায় সরাসরি ১৬২৬৩ নম্বরে কল করুন।</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <!-- Match Page -->
-        <div id="match" class="page-content">
-            <section class="form-section">
-                <div class="container">
-                    <div class="section-title">
-                        <h2 class="text-gradient">ডোনার ম্যাচ খুঁজুন</h2>
-                        <p>আপনার প্রয়োজনীয় রক্তের গ্রুপের উপযুক্ত ডোনার খুঁজে পান</p>
-                    </div>
-                    
-                    <!-- Search Form -->
-                    <div class="row justify-content-center mb-5">
-                        <div class="col-lg-8">
-                            <div class="form-container">
-                                <form id="donorSearchForm">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">প্রয়োজনীয় রক্তের গ্রুপ *</label>
-                                                <select class="form-select" name="searchBloodGroup" required>
-                                                    <option value="">নির্বাচন করুন</option>
-                                                    <option value="A+">A+</option>
-                                                    <option value="A-">A-</option>
-                                                    <option value="B+">B+</option>
-                                                    <option value="B-">B-</option>
-                                                    <option value="AB+">AB+</option>
-                                                    <option value="AB-">AB-</option>
-                                                    <option value="O+">O+</option>
-                                                    <option value="O-">O-</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">এলাকা *</label>
-                                                <select class="form-select" name="searchArea" required>
-                                                    <option value="">নির্বাচন করুন</option>
-                                                    <option value="ঢাকা">ঢাকা</option>
-                                                    <option value="চট্টগ্রাম">চট্টগ্রাম</option>
-                                                    <option value="সিলেট">সিলেট</option>
-                                                    <option value="রাজশাহী">রাজশাহী</option>
-                                                    <option value="খুলনা">খুলনা</option>
-                                                    <option value="বরিশাল">বরিশাল</option>
-                                                    <option value="রংপুর">রংপুর</option>
-                                                    <option value="ময়মনসিংহ">ময়মনসিংহ</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="text-center">
-                                        <button type="submit" class="btn btn-primary btn-hero">
-                                            <i class="fas fa-search me-2"></i>
-                                            ডোনার খুঁজুন
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Compatibility Chart -->
-                    <div class="compatibility-chart">
-                        <h4 class="text-center mb-4">রক্তের সামঞ্জস্য চার্ট</h4>
-                        <div class="table-responsive">
-                            <table class="compatibility-table">
-                                <thead>
-                                    <tr>
-                                        <th>দাতার গ্রুপ</th>
-                                        <th>A+</th>
-                                        <th>A-</th>
-                                        <th>B+</th>
-                                        <th>B-</th>
-                                        <th>AB+</th>
-                                        <th>AB-</th>
-                                        <th>O+</th>
-                                        <th>O-</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th>A+</th>
-                                        <td class="can-donate">✓</td>
-                                        <td class="cannot-donate">✗</td>
-                                        <td class="cannot-donate">✗</td>
-                                        <td class="cannot-donate">✗</td>
-                                        <td class="can-donate">✓</td>
-                                        <td class="cannot-donate">✗</td>
-                                        <td class="cannot-donate">✗</td>
-                                        <td class="cannot-donate">✗</td>
-                                    </tr>
-                                    <tr>
-                                        <th>A-</th>
-                                        <td class="can-donate">✓</td>
-                                        <td class="can-donate">✓</td>
-                                        <td class="cannot-donate">✗</td>
-                                        <td class="cannot-donate">✗</td>
-                                        <td class="can-donate">✓</td>
-                                        <td class="can-donate">✓</td>
-                                        <td class="cannot-donate">✗</td>
-                                        <td class="cannot-donate">✗</td>
-                                    </tr>
-                                    <tr>
-                                        <th>B+</th>
-                                        <td class="cannot-donate">✗</td>
-                                        <td class="cannot-donate">✗</td>
-                                        <td class="can-donate">✓</td>
-                                        <td class="cannot-donate">✗</td>
-                                        <td class="can-donate">✓</td>
-                                        <td class="cannot-donate">✗</td>
-                                        <td class="cannot-donate">✗</td>
-                                        <td class="cannot-donate">✗</td>
-                                    </tr>
-                                    <tr>
-                                        <th>B-</th>
-                                        <td class="cannot-donate">✗</td>
-                                        <td class="cannot-donate">✗</td>
-                                        <td class="can-donate">✓</td>
-                                        <td class="can-donate">✓</td>
-                                        <td class="can-donate">✓</td>
-                                        <td class="can-donate">✓</td>
-                                        <td class="cannot-donate">✗</td>
-                                        <td class="cannot-donate">✗</td>
-                                    </tr>
-                                    <tr>
-                                        <th>AB+</th>
-                                        <td class="cannot-donate">✗</td>
-                                        <td class="cannot-donate">✗</td>
-                                        <td class="cannot-donate">✗</td>
-                                        <td class="cannot-donate">✗</td>
-                                        <td class="can-donate">✓</td>
-                                        <td class="cannot-donate">✗</td>
-                                        <td class="cannot-donate">✗</td>
-                                        <td class="cannot-donate">✗</td>
-                                    </tr>
-                                    <tr>
-                                        <th>AB-</th>
-                                        <td class="cannot-donate">✗</td>
-                                        <td class="cannot-donate">✗</td>
-                                        <td class="cannot-donate">✗</td>
-                                        <td class="cannot-donate">✗</td>
-                                        <td class="can-donate">✓</td>
-                                        <td class="can-donate">✓</td>
-                                        <td class="cannot-donate">✗</td>
-                                        <td class="cannot-donate">✗</td>
-                                    </tr>
-                                    <tr>
-                                        <th>O+</th>
-                                        <td class="can-donate">✓</td>
-                                        <td class="cannot-donate">✗</td>
-                                        <td class="can-donate">✓</td>
-                                        <td class="cannot-donate">✗</td>
-                                        <td class="can-donate">✓</td>
-                                        <td class="cannot-donate">✗</td>
-                                        <td class="can-donate">✓</td>
-                                        <td class="cannot-donate">✗</td>
-                                    </tr>
-                                    <tr>
-                                        <th>O-</th>
-                                        <td class="can-donate">✓</td>
-                                        <td class="can-donate">✓</td>
-                                        <td class="can-donate">✓</td>
-                                        <td class="can-donate">✓</td>
-                                        <td class="can-donate">✓</td>
-                                        <td class="can-donate">✓</td>
-                                        <td class="can-donate">✓</td>
-                                        <td class="can-donate">✓</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <p class="text-center mt-3 text-muted">
-                            <small>✓ = রক্ত দিতে পারবে | ✗ = রক্ত দিতে পারবে না</small>
-                        </p>
-                    </div>
-                    
-                    <!-- Search Results -->
-                    <div id="searchResults" class="hidden">
-                        <h4 class="mb-4">খুঁজে পাওয়া ডোনার</h4>
-                        <div id="donorList">
-                            <!-- Sample donor cards -->
-                            <div class="donor-card">
-                                <div class="donor-info">
-                                    <div class="donor-avatar">আর</div>
-                                    <div class="flex-grow-1">
-                                        <h5 class="mb-1">আহমেদ রহমান</h5>
-                                        <p class="mb-1"><strong>রক্তের গ্রুপ:</strong> A+</p>
-                                        <p class="mb-1"><strong>এলাকা:</strong> ধানমন্ডি, ঢাকা</p>
-                                        <p class="mb-0"><strong>ফোন:</strong> ০১৭১২৩৪৫৬৭৮</p>
-                                    </div>
-                                    <div>
-                                        <span class="availability-badge available">উপলব্ধ</span>
-                                        <button class="btn btn-sm btn-primary mt-2">যোগাযোগ করুন</button>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="donor-card">
-                                <div class="donor-info">
-                                    <div class="donor-avatar">ফা</div>
-                                    <div class="flex-grow-1">
-                                        <h5 class="mb-1">ফাতেমা খাতুন</h5>
-                                        <p class="mb-1"><strong>রক্তের গ্রুপ:</strong> A+</p>
-                                        <p class="mb-1"><strong>এলাকা:</strong> উত্তরা, ঢাকা</p>
-                                        <p class="mb-0"><strong>ফোন:</strong> ০১৮৮৭৬৫৪৩২১</p>
-                                    </div>
-                                    <div>
-                                        <span class="availability-badge available">উপলব্ধ</span>
-                                        <button class="btn btn-sm btn-primary mt-2">যোগাযোগ করুন</button>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="donor-card">
-                                <div class="donor-info">
-                                    <div class="donor-avatar">ম</div>
-                                    <div class="flex-grow-1">
-                                        <h5 class="mb-1">মোহাম্মদ করিম</h5>
-                                        <p class="mb-1"><strong>রক্তের গ্রুপ:</strong> A+</p>
-                                        <p class="mb-1"><strong>এলাকা:</strong> মিরপুর, ঢাকা</p>
-                                        <p class="mb-0"><strong>ফোন:</strong> ০১৯১১২২৩৩৪৪</p>
-                                    </div>
-                                    <div>
-                                        <span class="availability-badge unavailable">অনুপলব্ধ</span>
-                                        <small class="text-muted d-block">২ সপ্তাহ পর</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <!-- Admin Page -->
-        <div id="admin" class="page-content">
-            <!-- Login Section -->
-            <div id="loginPage">
-                <section class="form-section">
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-6">
-                                <div class="form-container">
-                                    <div class="text-center mb-4">
-                                        <div class="action-icon blue mx-auto mb-3" style="width: 100px; height: 100px; font-size: 2.5rem;">
-                                            <i class="fas fa-user-shield"></i>
-                                        </div>
-                                        <h2 class="text-gradient">অ্যাডমিন লগইন</h2>
-                                        <p>সিস্টেম পরিচালনার জন্য লগইন করুন</p>
-                                    </div>
-                                    
-                                    <form id="adminLoginForm">
-                                        <div class="form-group">
-                                            <label class="form-label">ইমেইল ঠিকানা *</label>
-                                            <input type="email" class="form-control" id="adminEmail" required>
-                                        </div>
-                                        
-                                        <div class="form-group">
-                                            <label class="form-label">পাসওয়ার্ড *</label>
-                                            <div class="input-group">
-                                                <input type="password" class="form-control" id="adminPassword" required>
-                                                <button class="btn btn-outline-secondary" type="button" onclick="togglePassword()">
-                                                    <i class="fas fa-eye" id="passwordToggle"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="text-center mb-3">
-                                            <button type="button" class="btn btn-outline-primary" onclick="fillDemoCredentials()">
-                                                ডেমো তথ্য পূরণ করুন
-                                            </button>
-                                        </div>
-                                        
-                                        <div class="text-center">
-                                            <button type="submit" class="btn btn-primary btn-hero">
-                                                <i class="fas fa-sign-in-alt me-2"></i>
-                                                লগইন করুন
-                                            </button>
-                                        </div>
-                                        
-                                        <div id="loginError" class="alert alert-danger mt-3 hidden">
-                                            <i class="fas fa-exclamation-triangle me-2"></i>
-                                            ভুল ইমেইল বা পাসওয়ার্ড!
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
             </div>
 
-            <!-- Dashboard Section -->
-            <div id="dashboardPage" class="hidden">
-                <!-- Dashboard Header -->
-                <section class="hero-section">
-                    <div class="container">
-                        <div class="hero-content">
-                            <h1 class="hero-title">অ্যাডমিন ড্যাশবোর্ড</h1>
-                            <p class="hero-subtitle">সিস্টেম পরিচালনা ও পর্যবেক্ষণ কেন্দ্র</p>
-                            <button class="btn btn-outline-light" onclick="logout()">
-                                <i class="fas fa-sign-out-alt me-2"></i>
-                                লগআউট
-                            </button>
-                        </div>
-                    </div>
-                </section>
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="lg:hidden hidden border-t border-white border-opacity-10 py-6">
+                <div class="flex flex-col space-y-4">
+                    <a href="#home" class="nav-link text-white font-medium">Home</a>
+                    <a href="#about" class="nav-link text-white font-medium">About Us</a>
+                    <a href="#contact" class="nav-link text-white font-medium">Contact Us</a>
+                    <a href="#login" class="nav-link text-white font-medium">Login</a>
+                    <a href="#register" class="btn-primary text-white px-8 py-3 rounded-full font-semibold text-center">
+                        Register
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
 
-                <!-- Dashboard Stats -->
-                <section class="stats-section">
-                    <div class="container">
-                        <div class="row g-4">
-                            <div class="col-lg-3 col-md-6">
-                                <div class="stat-card">
-                                    <div class="action-icon red mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2rem;">
-                                        <i class="fas fa-tint"></i>
-                                    </div>
-                                    <span class="stat-number">2,450</span>
-                                    <div class="stat-label">মোট রক্তের ইউনিট</div>
-                                    <small class="text-success">↑ ১২% গত মাসে</small>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6">
-                                <div class="stat-card">
-                                    <div class="action-icon blue mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2rem;">
-                                        <i class="fas fa-users"></i>
-                                    </div>
-                                    <span class="stat-number">15,420</span>
-                                    <div class="stat-label">সক্রিয় ডোনার</div>
-                                    <small class="text-success">↑ ৮% গত মাসে</small>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6">
-                                <div class="stat-card">
-                                    <div class="action-icon orange mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2rem;">
-                                        <i class="fas fa-hospital"></i>
-                                    </div>
-                                    <span class="stat-number">45</span>
-                                    <div class="stat-label">হাসপাতালের অনুরোধ</div>
-                                    <small class="text-warning">আজকের</small>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6">
-                                <div class="stat-card">
-                                    <div class="action-icon green mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2rem;">
-                                        <i class="fas fa-exclamation-triangle"></i>
-                                    </div>
-                                    <span class="stat-number">12</span>
-                                    <div class="stat-label">মেয়াদ শেষ হচ্ছে</div>
-                                    <small class="text-danger">৭ দিনের মধ্যে</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+    <!-- Welcome Section -->
+    <section class="glass-morphism py-16 relative z-10">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-4xl lg:text-5xl font-bold text-white mb-8 hover-lift" id="welcomeText">
+                স্বাগতম Life Saver BD-তে! আপনার এক ক্লিকেই জীবন বাঁচাতে পারেন।
+            </h2>
+            <p class="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed hover-lift" id="taglineText">
+                Donate blood, save lives. Join our mission for a healthier Bangladesh.
+            </p>
+        </div>
+    </section>
 
-                <!-- Inventory Status -->
-                <section class="form-section">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-8">
-                                <div class="form-container">
-                                    <h4 class="text-gradient mb-4">রক্তের মজুদ স্ট্যাটাস</h4>
-                                    
-                                    <div class="row g-3">
-                                        <div class="col-md-6">
-                                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                                <span class="fw-bold">A+ (৪৫ ইউনিট)</span>
-                                                <span class="text-success">পর্যাপ্ত</span>
-                                            </div>
-                                            <div class="progress mb-3">
-                                                <div class="progress-bar bg-success" style="width: 75%"></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                                <span class="fw-bold">B+ (৩৮ ইউনিট)</span>
-                                                <span class="text-success">পর্যাপ্ত</span>
-                                            </div>
-                                            <div class="progress mb-3">
-                                                <div class="progress-bar bg-success" style="width: 63%"></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                                <span class="fw-bold">O+ (৫২ ইউনিট)</span>
-                                                <span class="text-success">পর্যাপ্ত</span>
-                                            </div>
-                                            <div class="progress mb-3">
-                                                <div class="progress-bar bg-success" style="width: 87%"></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                                <span class="fw-bold">AB+ (২৮ ইউনিট)</span>
-                                                <span class="text-success">পর্যাপ্ত</span>
-                                            </div>
-                                            <div class="progress mb-3">
-                                                <div class="progress-bar bg-success" style="width: 70%"></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                                <span class="fw-bold">A- (১৮ ইউনিট)</span>
-                                                <span class="text-warning">কম</span>
-                                            </div>
-                                            <div class="progress mb-3">
-                                                <div class="progress-bar bg-warning" style="width: 45%"></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                                <span class="fw-bold">B- (১৪ ইউনিট)</span>
-                                                <span class="text-warning">কম</span>
-                                            </div>
-                                            <div class="progress mb-3">
-                                                <div class="progress-bar bg-warning" style="width: 35%"></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                                <span class="fw-bold">AB- (১২ ইউনিট)</span>
-                                                <span class="text-warning">কম</span>
-                                            </div>
-                                            <div class="progress mb-3">
-                                                <div class="progress-bar bg-warning" style="width: 30%"></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                                <span class="fw-bold">O- (৫ ইউনিট)</span>
-                                                <span class="text-danger">জরুরি</span>
-                                            </div>
-                                            <div class="progress mb-3">
-                                                <div class="progress-bar bg-danger" style="width: 12%"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="col-lg-4">
-                                <div class="form-container">
-                                    <h4 class="text-gradient mb-4">কুইক অ্যাকশন</h4>
-                                    
-                                    <div class="d-grid gap-3">
-                                        <button class="btn btn-primary" onclick="alert('নতুন ডোনার যোগ করার ফর্ম খোলা হবে')">
-                                            <i class="fas fa-user-plus me-2"></i>
-                                            নতুন ডোনার যোগ করুন
-                                        </button>
-                                        
-                                        <button class="btn btn-warning" onclick="alert('হাসপাতালের অনুরোধ প্রসেসিং পেজ খোলা হবে')">
-                                            <i class="fas fa-hospital me-2"></i>
-                                            অনুরোধ প্রসেস করুন
-                                        </button>
-                                        
-                                        <button class="btn btn-info" onclick="alert('রিপোর্ট জেনারেশন পেজ খোলা হবে')">
-                                            <i class="fas fa-chart-bar me-2"></i>
-                                            রিপোর্ট তৈরি করুন
-                                        </button>
-                                        
-                                        <button class="btn btn-success" onclick="alert('ইনভেন্টরি আপডেট পেজ খোলা হবে')">
-                                            <i class="fas fa-sync-alt me-2"></i>
-                                            ইনভেন্টরি আপডেট
-                                        </button>
-                                        
-                                        <button class="btn btn-danger" onclick="alert('জরুরি নোটিফিকেশন পাঠানো হবে')">
-                                            <i class="fas fa-bell me-2"></i>
-                                            জরুরি নোটিফিকেশন
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+    <!-- Hero Section -->
+    <section class="hero-bg py-24 text-white relative">
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <div class="max-w-5xl mx-auto">
+                <h3 class="text-6xl lg:text-7xl font-black mb-10 leading-tight">
+                    <span id="heroTitle" class="text-gradient">Be a Hero Today</span>
+                </h3>
+                <p class="text-2xl mb-16 opacity-90 font-light leading-relaxed" id="heroSubtitle">
+                    Every drop counts. Your donation can save up to 3 lives.
+                </p>
 
-                <!-- Charts Section -->
-                <section class="stats-section">
-                    <div class="container">
-                        <div class="row g-4">
-                            <div class="col-lg-8">
-                                <div class="form-container">
-                                    <h4 class="text-gradient mb-4">সাপ্তাহিক রক্তদানের ট্রেন্ড</h4>
-                                    <canvas id="weeklyChart" width="400" height="200"></canvas>
+                <!-- CTA Buttons -->
+                <div class="flex flex-col sm:flex-row gap-8 justify-center mb-20">
+                    <button onclick="showLoginPrompt('donate')" class="btn-primary text-white px-12 py-5 rounded-full text-xl font-bold neon-glow-red">
+                        <i class="fas fa-heart mr-4"></i>
+                        <span id="donateBtn">Donate Blood</span>
+                    </button>
+                    <button onclick="showLoginPrompt('request')" class="btn-secondary px-12 py-5 rounded-full text-xl font-bold">
+                        <i class="fas fa-hand-holding-heart mr-4"></i>
+                        <span id="requestBtn">Request Blood</span>
+                    </button>
+                </div>
+
+                <!-- Animated Counters -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="counter-box glass-card rounded-3xl p-8">
+                        <div class="text-5xl font-black mb-4 text-gradient" id="donorCount">5,247</div>
+                        <div class="text-lg font-medium opacity-80" id="donorLabel">Live Donors</div>
+                    </div>
+                    <div class="counter-box glass-card rounded-3xl p-8">
+                        <div class="text-5xl font-black mb-4 text-gradient" id="livesCount">12,891</div>
+                        <div class="text-lg font-medium opacity-80" id="livesLabel">Lives Saved</div>
+                    </div>
+                    <div class="counter-box glass-card rounded-3xl p-8">
+                        <div class="text-5xl font-black mb-4 text-gradient" id="campaignCount">342</div>
+                        <div class="text-lg font-medium opacity-80" id="campaignLabel">Campaigns Held</div>
+                    </div>
+                    <div class="counter-box glass-card rounded-3xl p-8">
+                        <div class="text-5xl font-black mb-4 text-gradient" id="unitsCount">1,856</div>
+                        <div class="text-lg font-medium opacity-80" id="unitsLabel">Units Available</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Message Section (Testimonials) -->
+    <section class="py-24 relative z-10">
+        <div class="container mx-auto px-6">
+            <h3 class="text-5xl font-bold text-center text-white mb-20 text-gradient" id="testimonialTitle">
+                Real Stories, Real Impact
+            </h3>
+            
+            <div class="grid lg:grid-cols-2 gap-12 max-w-7xl mx-auto">
+                <!-- Receiver Testimonial -->
+                <div class="testimonial-card glass-card p-10 rounded-3xl hover-3d">
+                    <div class="flex items-start space-x-6">
+                        <div class="w-24 h-24 neon-glow-blue rounded-2xl flex items-center justify-center flex-shrink-0 gradient-secondary">
+                            <i class="fas fa-user-heart text-white text-3xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center mb-4">
+                                <div class="flex text-yellow-400 mb-2">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
-                                <div class="form-container">
-                                    <h4 class="text-gradient mb-4">রক্তের গ্রুপ বন্টন</h4>
-                                    <canvas id="bloodGroupChart" width="300" height="300"></canvas>
-                                </div>
+                            <p class="text-white mb-8 italic text-xl leading-relaxed font-light" id="receiverMessage">
+                                "Thanks to Life Saver BD, I received blood on time and got a new chance at life!"
+                            </p>
+                            <div class="border-t border-white border-opacity-20 pt-6">
+                                <div class="font-bold text-white text-lg">Rashida Begum</div>
+                                <div class="text-gray-400 font-medium">Blood Recipient • Dhaka, Bangladesh</div>
                             </div>
                         </div>
                     </div>
-                </section>
+                </div>
+
+                <!-- Donor Testimonial -->
+                <div class="testimonial-card glass-card p-10 rounded-3xl hover-3d">
+                    <div class="flex items-start space-x-6">
+                        <div class="w-24 h-24 neon-glow-red rounded-2xl flex items-center justify-center flex-shrink-0 gradient-primary">
+                            <i class="fas fa-hand-holding-heart text-white text-3xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center mb-4">
+                                <div class="flex text-yellow-400 mb-2">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                            <p class="text-white mb-8 italic text-xl leading-relaxed font-light" id="donorMessage">
+                                "Giving blood is giving hope. Proud to be a Life Saver!"
+                            </p>
+                            <div class="border-t border-white border-opacity-20 pt-6">
+                                <div class="font-bold text-white text-lg">Mohammad Rahman</div>
+                                <div class="text-gray-400 font-medium">15 donations • Chittagong</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Campaigns & Gallery Section -->
+    <section class="py-24 relative z-10">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-20">
+                <h3 class="text-5xl font-bold text-white mb-8 text-gradient" id="campaignSectionTitle">
+                    Upcoming Blood Donation Campaigns
+                </h3>
+                <p class="text-gray-300 text-xl font-light max-w-2xl mx-auto" id="campaignSubtitle">
+                    Join our community events and make a difference
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-10 mb-12">
+                <div class="campaign-card rounded-3xl overflow-hidden hover-3d">
+                    <div class="h-64 gradient-primary flex items-center justify-center relative">
+                        <i class="fas fa-calendar-alt text-white text-6xl"></i>
+                        <div class="absolute inset-0 bg-black bg-opacity-20"></div>
+                        <div class="absolute top-4 right-4 bg-white bg-opacity-20 backdrop-blur-sm rounded-full px-4 py-2">
+                            <span class="text-white font-bold text-sm">Dec 28</span>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <h4 class="font-bold text-2xl mb-4 text-white">Dhaka University Campaign</h4>
+                        <div class="flex items-center text-gray-400 text-sm mb-4">
+                            <i class="fas fa-clock mr-2"></i>
+                            <span>December 28, 2024 • 9:00 AM - 5:00 PM</span>
+                        </div>
+                        <p class="text-gray-300 mb-8 leading-relaxed">Join us at DU campus for our biggest blood donation drive of the year.</p>
+                        <button onclick="showLoginPrompt('campaign')" class="w-full btn-primary py-4 rounded-2xl font-bold text-lg">
+                            Join Campaign
+                        </button>
+                    </div>
+                </div>
+
+                <div class="campaign-card rounded-3xl overflow-hidden hover-3d">
+                    <div class="h-64 gradient-secondary flex items-center justify-center relative">
+                        <i class="fas fa-hospital text-white text-6xl"></i>
+                        <div class="absolute inset-0 bg-black bg-opacity-20"></div>
+                        <div class="absolute top-4 right-4 bg-white bg-opacity-20 backdrop-blur-sm rounded-full px-4 py-2">
+                            <span class="text-white font-bold text-sm">Jan 5</span>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <h4 class="font-bold text-2xl mb-4 text-white">Square Hospital Drive</h4>
+                        <div class="flex items-center text-gray-400 text-sm mb-4">
+                            <i class="fas fa-clock mr-2"></i>
+                            <span>January 5, 2025 • 10:00 AM - 4:00 PM</span>
+                        </div>
+                        <p class="text-gray-300 mb-8 leading-relaxed">Partner with Square Hospital to help patients in need.</p>
+                        <button onclick="showLoginPrompt('campaign')" class="w-full btn-primary py-4 rounded-2xl font-bold text-lg">
+                            Join Campaign
+                        </button>
+                    </div>
+                </div>
+
+                <div class="campaign-card rounded-3xl overflow-hidden hover-3d">
+                    <div class="h-64 bg-gradient-to-br from-green-600 to-emerald-600 flex items-center justify-center relative">
+                        <i class="fas fa-users text-white text-6xl"></i>
+                        <div class="absolute inset-0 bg-black bg-opacity-20"></div>
+                        <div class="absolute top-4 right-4 bg-white bg-opacity-20 backdrop-blur-sm rounded-full px-4 py-2">
+                            <span class="text-white font-bold text-sm">Jan 12</span>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <h4 class="font-bold text-2xl mb-4 text-white">Community Center Drive</h4>
+                        <div class="flex items-center text-gray-400 text-sm mb-4">
+                            <i class="fas fa-clock mr-2"></i>
+                            <span>January 12, 2025 • 8:00 AM - 6:00 PM</span>
+                        </div>
+                        <p class="text-gray-300 mb-8 leading-relaxed">Neighborhood blood drive at Gulshan Community Center.</p>
+                        <button onclick="showLoginPrompt('campaign')" class="w-full btn-primary py-4 rounded-2xl font-bold text-lg">
+                            Join Campaign
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us / Key Features -->
+    <section class="py-24 relative z-10">
+        <div class="container mx-auto px-6">
+            <h3 class="text-5xl font-bold text-center text-white mb-20 text-gradient" id="featuresTitle">
+                Why Choose Life Saver BD?
+            </h3>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
+                <div class="feature-card text-center p-8 rounded-3xl hover-lift">
+                    <div class="w-24 h-24 neon-glow-red rounded-2xl flex items-center justify-center mx-auto mb-8 gradient-primary">
+                        <i class="fas fa-search-plus text-white text-3xl"></i>
+                    </div>
+                    <h4 class="font-bold mb-4 text-white text-xl" id="feature1Title">Automated Matching</h4>
+                    <p class="text-gray-300 leading-relaxed" id="feature1Desc">Smart algorithm matches donors with recipients instantly</p>
+                </div>
+
+                <div class="feature-card text-center p-8 rounded-3xl hover-lift">
+                    <div class="w-24 h-24 neon-glow-blue rounded-2xl flex items-center justify-center mx-auto mb-8 gradient-secondary">
+                        <i class="fas fa-bolt text-white text-3xl"></i>
+                    </div>
+                    <h4 class="font-bold mb-4 text-white text-xl" id="feature2Title">Secure & Fast</h4>
+                    <p class="text-gray-300 leading-relaxed" id="feature2Desc">Quick and secure blood requests with real-time updates</p>
+                </div>
+
+                <div class="feature-card text-center p-8 rounded-3xl hover-lift">
+                    <div class="w-24 h-24 neon-glow-red rounded-2xl flex items-center justify-center mx-auto mb-8 bg-gradient-to-br from-green-600 to-emerald-600">
+                        <i class="fas fa-chart-line text-white text-3xl"></i>
+                    </div>
+                    <h4 class="font-bold mb-4 text-white text-xl" id="feature3Title">Real-Time Inventory</h4>
+                    <p class="text-gray-300 leading-relaxed" id="feature3Desc">Live tracking of blood availability across Bangladesh</p>
+                </div>
+
+                <div class="feature-card text-center p-8 rounded-3xl hover-lift">
+                    <div class="w-24 h-24 neon-glow-blue rounded-2xl flex items-center justify-center mx-auto mb-8 bg-gradient-to-br from-purple-600 to-violet-600">
+                        <i class="fas fa-language text-white text-3xl"></i>
+                    </div>
+                    <h4 class="font-bold mb-4 text-white text-xl" id="feature4Title">Multi-language</h4>
+                    <p class="text-gray-300 leading-relaxed" id="feature4Desc">Available in Bengali and English for everyone</p>
+                </div>
+
+                <div class="feature-card text-center p-8 rounded-3xl hover-lift">
+                    <div class="w-24 h-24 neon-glow-red rounded-2xl flex items-center justify-center mx-auto mb-8 bg-gradient-to-br from-amber-600 to-orange-600">
+                        <i class="fas fa-shield-alt text-white text-3xl"></i>
+                    </div>
+                    <h4 class="font-bold mb-4 text-white text-xl" id="feature5Title">Privacy & Safety</h4>
+                    <p class="text-gray-300 leading-relaxed" id="feature5Desc">Your data is protected with highest security standards</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Info Highlights Section -->
+    <section class="info-section py-24 relative z-10">
+        <div class="container mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-16">
+                <!-- Blood Donation Tips -->
+                <div class="glass-card rounded-3xl p-12 hover-lift">
+                    <h4 class="text-4xl font-bold text-white mb-10 text-gradient" id="tipsTitle">
+                        Blood Donation Tips
+                    </h4>
+                    <div class="space-y-8">
+                        <div class="flex items-start space-x-6">
+                            <div class="w-16 h-16 neon-glow-red rounded-2xl flex items-center justify-center flex-shrink-0 bg-gradient-to-br from-green-600 to-emerald-600">
+                                <i class="fas fa-check-circle text-white text-2xl"></i>
+                            </div>
+                            <div>
+                                <h5 class="font-bold text-white text-xl mb-3">Eligibility</h5>
+                                <p class="text-gray-300 leading-relaxed text-lg">Age 18-65, weight 50kg+, healthy condition</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-6">
+                            <div class="w-16 h-16 neon-glow-red rounded-2xl flex items-center justify-center flex-shrink-0 gradient-primary">
+                                <i class="fas fa-heart text-white text-2xl"></i>
+                            </div>
+                            <div>
+                                <h5 class="font-bold text-white text-xl mb-3">Health Benefits</h5>
+                                <p class="text-gray-300 leading-relaxed text-lg">Reduces iron overload, burns calories, free health checkup</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-6">
+                            <div class="w-16 h-16 neon-glow-blue rounded-2xl flex items-center justify-center flex-shrink-0 gradient-secondary">
+                                <i class="fas fa-info-circle text-white text-2xl"></i>
+                            </div>
+                            <div>
+                                <h5 class="font-bold text-white text-xl mb-3">Myth Buster</h5>
+                                <p class="text-gray-300 leading-relaxed text-lg">Donating blood doesn't make you weak or sick</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- How It Works -->
+                <div class="glass-card rounded-3xl p-12 hover-lift">
+                    <h4 class="text-4xl font-bold text-white mb-10 text-gradient" id="howItWorksTitle">
+                        How It Works
+                    </h4>
+                    <div class="space-y-10">
+                        <div class="flex items-center space-x-8">
+                            <div class="w-18 h-18 neon-glow-red rounded-2xl flex items-center justify-center font-black text-white text-2xl gradient-primary">1</div>
+                            <div>
+                                <h5 class="font-bold text-white text-xl mb-3">Register</h5>
+                                <p class="text-gray-300 leading-relaxed text-lg">Create your account with basic information</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-8">
+                            <div class="w-18 h-18 neon-glow-red rounded-2xl flex items-center justify-center font-black text-white text-2xl gradient-primary">2</div>
+                            <div>
+                                <h5 class="font-bold text-white text-xl mb-3">Match</h5>
+                                <p class="text-gray-300 leading-relaxed text-lg">Get matched with donors or recipients nearby</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-8">
+                            <div class="w-18 h-18 neon-glow-red rounded-2xl flex items-center justify-center font-black text-white text-2xl gradient-primary">3</div>
+                            <div>
+                                <h5 class="font-bold text-white text-xl mb-3">Donate/Request</h5>
+                                <p class="text-gray-300 leading-relaxed text-lg">Complete the donation or request process</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-8">
+                            <div class="w-18 h-18 neon-glow-red rounded-2xl flex items-center justify-center font-black text-white text-2xl gradient-primary">4</div>
+                            <div>
+                                <h5 class="font-bold text-white text-xl mb-3">Save Lives</h5>
+                                <p class="text-gray-300 leading-relaxed text-lg">Make a difference in someone's life</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter-bg py-20 relative overflow-hidden">
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <h4 class="text-4xl font-bold mb-8 text-white" id="newsletterTitle">
+                Stay Updated
+            </h4>
+            <p class="mb-12 text-xl text-white opacity-90 font-light max-w-2xl mx-auto" id="newsletterDesc">
+                Get updates on blood camps and urgent needs
+            </p>
+            <div class="max-w-2xl mx-auto flex flex-col sm:flex-row gap-6">
+                <input type="email" placeholder="Enter your email address" class="flex-1 px-8 py-5 rounded-2xl text-gray-800 glass-morphism border-0 focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-30 text-lg">
+                <button class="bg-white text-red-600 px-10 py-5 rounded-2xl font-bold hover-lift neon-glow-red text-lg">
+                    Subscribe Now
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer-bg text-white py-20 relative z-10">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                <!-- Logo & Description -->
+                <div class="lg:col-span-1">
+                    <div class="flex items-center space-x-4 mb-8">
+                        <div class="w-16 h-16 neon-glow-red rounded-2xl flex items-center justify-center pulse-glow gradient-primary">
+                            <i class="fas fa-heart text-white text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gradient">Life Saver BD</h3>
+                            <p class="text-sm text-gray-400 font-medium">জীবন বাঁচান, আশা দিন</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 leading-relaxed text-lg mb-8">
+                        Connecting blood donors with those in need across Bangladesh. Together, we save lives.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="social-icon w-14 h-14 glass-morphism rounded-2xl flex items-center justify-center neon-glow-blue">
+                            <i class="fab fa-facebook-f text-blue-400 text-xl"></i>
+                        </a>
+                        <a href="#" class="social-icon w-14 h-14 glass-morphism rounded-2xl flex items-center justify-center neon-glow-blue">
+                            <i class="fab fa-twitter text-blue-300 text-xl"></i>
+                        </a>
+                        <a href="#" class="social-icon w-14 h-14 glass-morphism rounded-2xl flex items-center justify-center neon-glow-red">
+                            <i class="fab fa-instagram text-pink-400 text-xl"></i>
+                        </a>
+                        <a href="#" class="social-icon w-14 h-14 glass-morphism rounded-2xl flex items-center justify-center neon-glow-blue">
+                            <i class="fab fa-linkedin-in text-blue-500 text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="font-bold mb-8 text-xl text-white">Quick Links</h4>
+                    <div class="space-y-4">
+                        <a href="#home" class="block text-gray-300 hover:text-white transition-all hover:translate-x-2 text-lg">Home</a>
+                        <a href="#about" class="block text-gray-300 hover:text-white transition-all hover:translate-x-2 text-lg">About Us</a>
+                        <a href="#contact" class="block text-gray-300 hover:text-white transition-all hover:translate-x-2 text-lg">Contact Us</a>
+                        <a href="#faq" class="block text-gray-300 hover:text-white transition-all hover:translate-x-2 text-lg">FAQ</a>
+                        <a href="#privacy" class="block text-gray-300 hover:text-white transition-all hover:translate-x-2 text-lg">Privacy Policy</a>
+                    </div>
+                </div>
+
+                <!-- Contact Info -->
+                <div>
+                    <h4 class="font-bold mb-8 text-xl text-white">Contact Info</h4>
+                    <div class="space-y-6 text-gray-300">
+                        <div class="flex items-center space-x-4 hover:text-white transition-colors">
+                            <div class="w-12 h-12 glass-morphism rounded-2xl flex items-center justify-center">
+                                <i class="fas fa-envelope text-lg"></i>
+                            </div>
+                            <span class="text-lg">info@lifesaverbd.com</span>
+                        </div>
+                        <div class="flex items-center space-x-4 hover:text-white transition-colors">
+                            <div class="w-12 h-12 glass-morphism rounded-2xl flex items-center justify-center">
+                                <i class="fas fa-phone text-lg"></i>
+                            </div>
+                            <span class="text-lg">+880 1700-000000</span>
+                        </div>
+                        <div class="flex items-center space-x-4 hover:text-white transition-colors">
+                            <div class="w-12 h-12 glass-morphism rounded-2xl flex items-center justify-center">
+                                <i class="fas fa-map-marker-alt text-lg"></i>
+                            </div>
+                            <span class="text-lg">Dhaka, Bangladesh</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Preview -->
+                <div>
+                    <h4 class="font-bold mb-8 text-xl text-white">FAQ Preview</h4>
+                    <div class="space-y-6">
+                        <div class="glass-morphism p-4 rounded-2xl">
+                            <h5 class="font-semibold text-white mb-2">Who can donate blood?</h5>
+                            <p class="text-gray-300 text-sm">Healthy individuals aged 18-65...</p>
+                        </div>
+                        <div class="glass-morphism p-4 rounded-2xl">
+                            <h5 class="font-semibold text-white mb-2">Is it safe to donate?</h5>
+                            <p class="text-gray-300 text-sm">Yes, completely safe with sterile...</p>
+                        </div>
+                        <a href="#faq" class="inline-flex items-center text-red-400 hover:text-red-300 font-semibold">
+                            View All FAQ <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-white border-opacity-20 pt-8 text-center">
+                <p class="text-xl text-gray-300">
+                    &copy; 2025 Life Saver BD | Powered by Life Saver BD Team
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Prompt Modal -->
+    <div id="loginModal" class="fixed inset-0 modal-backdrop hidden items-center justify-center z-50">
+        <div class="glass-card rounded-3xl p-12 max-w-lg mx-4 hover-lift">
+            <div class="text-center">
+                <div class="w-24 h-24 neon-glow-red rounded-2xl flex items-center justify-center mx-auto mb-8 gradient-primary">
+                    <i class="fas fa-user-plus text-white text-4xl"></i>
+                </div>
+                <h3 class="text-3xl font-bold text-white mb-8">Join Life Saver BD</h3>
+                <p class="text-gray-300 mb-10 leading-relaxed text-lg" id="modalMessage">
+                    Please login or register to continue with blood donation.
+                </p>
+                <div class="flex gap-6">
+                    <button onclick="closeModal()" class="flex-1 px-8 py-4 btn-secondary rounded-2xl font-bold text-lg">
+                        Cancel
+                    </button>
+                    <button onclick="redirectToLogin()" class="flex-1 px-8 py-4 btn-primary rounded-2xl font-bold text-lg">
+                        Login / Register
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // Page Navigation
-        function showPage(pageId) {
-            // Hide all pages
-            document.querySelectorAll('.page-content').forEach(page => {
-                page.classList.remove('active');
-            });
-            
-            // Show selected page
-            document.getElementById(pageId).classList.add('active');
-            
-            // Update navigation
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.classList.remove('active');
-            });
-            
-            // Find and activate the corresponding nav link
-            const navLinks = document.querySelectorAll('.nav-link');
-            navLinks.forEach(link => {
-                if (link.getAttribute('onclick') && link.getAttribute('onclick').includes(pageId)) {
-                    link.classList.add('active');
-                }
-            });
-            
-            // Scroll to top
-            window.scrollTo(0, 0);
-        }
+        // Scroll Progress Indicator
+        window.addEventListener('scroll', () => {
+            const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            document.getElementById('scrollIndicator').style.transform = `scaleX(${scrolled / 100})`;
+        });
 
-        // Donor Registration Form
-        document.getElementById('donorRegistrationForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Get form data
-            const formData = new FormData(this);
-            const donorData = {};
-            
-            for (let [key, value] of formData.entries()) {
-                donorData[key] = value;
+        // Language Toggle
+        let currentLanguage = 'en';
+        const translations = {
+            en: {
+                welcomeText: "Welcome to Life Saver BD! You can save lives with just one click.",
+                taglineText: "Donate blood, save lives. Join our mission for a healthier Bangladesh.",
+                heroTitle: "Be a Hero Today",
+                heroSubtitle: "Every drop counts. Your donation can save up to 3 lives.",
+                donateBtn: "Donate Blood",
+                requestBtn: "Request Blood",
+                donorLabel: "Live Donors",
+                livesLabel: "Lives Saved",
+                campaignLabel: "Campaigns Held",
+                unitsLabel: "Units Available",
+                testimonialTitle: "Real Stories, Real Impact",
+                receiverMessage: "Thanks to Life Saver BD, I received blood on time and got a new chance at life!",
+                donorMessage: "Giving blood is giving hope. Proud to be a Life Saver!",
+                campaignSectionTitle: "Upcoming Blood Donation Campaigns",
+                campaignSubtitle: "Join our community events and make a difference",
+                featuresTitle: "Why Choose Life Saver BD?",
+                feature1Title: "Automated Matching",
+                feature1Desc: "Smart algorithm matches donors with recipients instantly",
+                feature2Title: "Secure & Fast",
+                feature2Desc: "Quick and secure blood requests with real-time updates",
+                feature3Title: "Real-Time Inventory",
+                feature3Desc: "Live tracking of blood availability across Bangladesh",
+                feature4Title: "Multi-language",
+                feature4Desc: "Available in Bengali and English for everyone",
+                feature5Title: "Privacy & Safety",
+                feature5Desc: "Your data is protected with highest security standards",
+                tipsTitle: "Blood Donation Tips",
+                howItWorksTitle: "How It Works",
+                newsletterTitle: "Stay Updated",
+                newsletterDesc: "Get updates on blood camps and urgent needs"
+            },
+            bn: {
+                welcomeText: "স্বাগতম Life Saver BD-তে! আপনার এক ক্লিকেই জীবন বাঁচাতে পারেন।",
+                taglineText: "রক্তদান করুন, জীবন বাঁচান। একটি সুস্থ বাংলাদেশের জন্য আমাদের মিশনে যোগ দিন।",
+                heroTitle: "আজই একজন বীর হন",
+                heroSubtitle: "প্রতিটি ফোঁটা গুরুত্বপূর্ণ। আপনার দান ৩টি জীবন বাঁচাতে পারে।",
+                donateBtn: "রক্তদান করুন",
+                requestBtn: "রক্তের জন্য অনুরোধ",
+                donorLabel: "সক্রিয় দাতা",
+                livesLabel: "জীবন রক্ষা",
+                campaignLabel: "ক্যাম্পেইন সম্পন্ন",
+                unitsLabel: "ইউনিট উপলব্ধ",
+                testimonialTitle: "বাস্তব গল্প, বাস্তব প্রভাব",
+                receiverMessage: "Life Saver BD-র কারণে আমি সময়মতো রক্ত পেয়েছি এবং নতুন জীবন পেয়েছি!",
+                donorMessage: "রক্তদান মানে আশা দেওয়া। Life Saver হতে পেরে গর্বিত!",
+                campaignSectionTitle: "আসন্ন রক্তদান ক্যাম্পেইন",
+                campaignSubtitle: "আমাদের কমিউনিটি ইভেন্টে যোগ দিন এবং পরিবর্তন আনুন",
+                featuresTitle: "কেন Life Saver BD বেছে নেবেন?",
+                feature1Title: "স্বয়ংক্রিয় ম্যাচিং",
+                feature1Desc: "স্মার্ট অ্যালগরিদম তাৎক্ষণিকভাবে দাতা ও গ্রহীতাকে মিলিয়ে দেয়",
+                feature2Title: "নিরাপদ ও দ্রুত",
+                feature2Desc: "রিয়েল-টাইম আপডেটসহ দ্রুত ও নিরাপদ রক্তের অনুরোধ",
+                feature3Title: "রিয়েল-টাইম তালিকা",
+                feature3Desc: "সারা বাংলাদেশে রক্তের প্রাপ্যতার লাইভ ট্র্যাকিং",
+                feature4Title: "বহুভাষিক",
+                feature4Desc: "সবার জন্য বাংলা ও ইংরেজিতে উপলব্ধ",
+                feature5Title: "গোপনীয়তা ও নিরাপত্তা",
+                feature5Desc: "আপনার ডেটা সর্বোচ্চ নিরাপত্তা মানদণ্ডে সুরক্ষিত",
+                tipsTitle: "রক্তদানের টিপস",
+                howItWorksTitle: "এটি কীভাবে কাজ করে",
+                newsletterTitle: "আপডেট থাকুন",
+                newsletterDesc: "রক্তদান ক্যাম্প ও জরুরি প্রয়োজনের আপডেট পান"
             }
-            
-            // Simulate form submission
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
-            
-            submitBtn.innerHTML = '<div class="loading"></div> নিবন্ধন হচ্ছে...';
-            submitBtn.disabled = true;
-            
-            setTimeout(() => {
-                alert('✅ সফলভাবে নিবন্ধন সম্পন্ন হয়েছে! আপনার তথ্য যাচাই করে শীঘ্রই যোগাযোগ করা হবে।');
-                this.reset();
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-                showPage('home');
-            }, 2000);
-        });
+        };
 
-        // Emergency Request Form
-        document.getElementById('emergencyRequestForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'en' ? 'bn' : 'en';
+            document.getElementById('currentLang').textContent = currentLanguage.toUpperCase();
             
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
-            
-            submitBtn.innerHTML = '<div class="loading"></div> অনুরোধ পাঠানো হচ্ছে...';
-            submitBtn.disabled = true;
-            
-            setTimeout(() => {
-                alert('🚨 জরুরি অনুরোধ সফলভাবে পাঠানো হয়েছে! আমরা দ্রুততম সময়ে উপযুক্ত ডোনার খুঁজে আপনার সাথে যোগাযোগ করব।');
-                this.reset();
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-                showPage('home');
-            }, 2000);
-        });
-
-        // Donor Search Form
-        document.getElementById('donorSearchForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
-            
-            submitBtn.innerHTML = '<div class="loading"></div> খুঁজছি...';
-            submitBtn.disabled = true;
-            
-            setTimeout(() => {
-                document.getElementById('searchResults').classList.remove('hidden');
-                document.getElementById('searchResults').scrollIntoView({ behavior: 'smooth' });
-                
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-            }, 1500);
-        });
-
-        // Inventory Filter Functions
-        function filterInventory() {
-            const filter = document.getElementById('statusFilter').value;
-            const cards = document.querySelectorAll('.blood-group-card');
-            
-            cards.forEach(card => {
-                if (filter === 'all' || card.dataset.status === filter) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
+            const texts = translations[currentLanguage];
+            Object.keys(texts).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.textContent = texts[key];
                 }
             });
         }
 
-        function searchBloodGroup() {
-            const searchTerm = document.getElementById('bloodGroupSearch').value.toLowerCase();
-            const cards = document.querySelectorAll('.blood-group-card');
-            
-            cards.forEach(card => {
-                const bloodGroup = card.dataset.group.toLowerCase();
-                if (bloodGroup.includes(searchTerm)) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        }
+        document.getElementById('langToggle').addEventListener('click', toggleLanguage);
 
-        // Initialize page
-        document.addEventListener('DOMContentLoaded', function() {
-            // Set default active page
-            showPage('home');
-            
-            // Add smooth scrolling for better UX
-            document.documentElement.style.scrollBehavior = 'smooth';
-        });
-
-        // Add some interactive effects
-        document.querySelectorAll('.action-card, .donor-card, .blood-group-card').forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-5px)';
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0)';
-            });
-        });
-
-        // Contact Form
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
-            
-            submitBtn.innerHTML = '<div class="loading"></div> পাঠানো হচ্ছে...';
-            submitBtn.disabled = true;
-            
-            setTimeout(() => {
-                alert('✅ আপনার বার্তা সফলভাবে পাঠানো হয়েছে! আমরা শীঘ্রই আপনার সাথে যোগাযোগ করব।');
-                this.reset();
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-            }, 2000);
-        });
-
-        // Admin Login Functions
-        function fillDemoCredentials() {
-            document.getElementById('adminEmail').value = 'admin@lifesaverbd.org';
-            document.getElementById('adminPassword').value = 'admin123';
-        }
-
-        function togglePassword() {
-            const passwordField = document.getElementById('adminPassword');
-            const toggleIcon = document.getElementById('passwordToggle');
-            
-            if (passwordField.type === 'password') {
-                passwordField.type = 'text';
-                toggleIcon.classList.remove('fa-eye');
-                toggleIcon.classList.add('fa-eye-slash');
+        // Dark Mode Toggle (Already dark, but can toggle to lighter dark)
+        function toggleTheme() {
+            document.body.classList.toggle('lighter-dark');
+            const icon = document.querySelector('#themeToggle i');
+            if (document.body.classList.contains('lighter-dark')) {
+                icon.className = 'fas fa-sun text-yellow-400';
+                document.body.style.background = '#1a1a2e';
             } else {
-                passwordField.type = 'password';
-                toggleIcon.classList.remove('fa-eye-slash');
-                toggleIcon.classList.add('fa-eye');
+                icon.className = 'fas fa-moon text-white';
+                document.body.style.background = '#0a0a0f';
             }
         }
 
-        // Admin Login Form
-        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const email = document.getElementById('adminEmail').value;
-            const password = document.getElementById('adminPassword').value;
-            const errorDiv = document.getElementById('loginError');
-            
-            // Demo credentials
-            if (email === 'admin@lifesaverbd.org' && password === 'admin123') {
-                const submitBtn = this.querySelector('button[type="submit"]');
-                const originalText = submitBtn.innerHTML;
-                
-                submitBtn.innerHTML = '<div class="loading"></div> লগইন হচ্ছে...';
-                submitBtn.disabled = true;
-                
-                setTimeout(() => {
-                    document.getElementById('loginPage').classList.add('hidden');
-                    document.getElementById('dashboardPage').classList.remove('hidden');
-                    initializeCharts();
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                }, 1500);
-                
-                errorDiv.classList.add('hidden');
-            } else {
-                errorDiv.classList.remove('hidden');
-                setTimeout(() => {
-                    errorDiv.classList.add('hidden');
-                }, 3000);
-            }
+        document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+
+        // Mobile Menu Toggle
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
         });
 
-        function logout() {
-            if (confirm('আপনি কি লগআউট করতে চান?')) {
-                document.getElementById('dashboardPage').classList.add('hidden');
-                document.getElementById('loginPage').classList.remove('hidden');
-                document.getElementById('adminLoginForm').reset();
+        // Login Prompt Modal
+        function showLoginPrompt(action) {
+            const modal = document.getElementById('loginModal');
+            const message = document.getElementById('modalMessage');
+            
+            const messages = {
+                donate: 'Please login or register to continue with blood donation.',
+                request: 'Please login or register to request blood.',
+                campaign: 'Please login or register to join our campaigns.'
+            };
+            
+            message.textContent = messages[action] || messages.donate;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('loginModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function redirectToLogin() {
+            alert('Redirecting to login/register page...');
+            closeModal();
+        }
+
+        // Counter Animation
+        function animateCounters() {
+            const counters = [
+                { id: 'donorCount', target: 5247 },
+                { id: 'livesCount', target: 12891 },
+                { id: 'campaignCount', target: 342 },
+                { id: 'unitsCount', target: 1856 }
+            ];
+
+            counters.forEach(counter => {
+                const element = document.getElementById(counter.id);
+                let current = 0;
+                const increment = counter.target / 100;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= counter.target) {
+                        element.textContent = counter.target.toLocaleString();
+                        clearInterval(timer);
+                    } else {
+                        element.textContent = Math.floor(current).toLocaleString();
+                    }
+                }, 30);
+            });
+        }
+
+        // Trigger counter animation when page loads
+        window.addEventListener('load', () => {
+            setTimeout(animateCounters, 1500);
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('loginModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
             }
-        }
-
-        // Initialize Charts
-        function initializeCharts() {
-            // Weekly Donation Trend Chart
-            const weeklyCtx = document.getElementById('weeklyChart').getContext('2d');
-            new Chart(weeklyCtx, {
-                type: 'line',
-                data: {
-                    labels: ['সোমবার', 'মঙ্গলবার', 'বুধবার', 'বৃহস্পতিবার', 'শুক্রবার', 'শনিবার', 'রবিবার'],
-                    datasets: [{
-                        label: 'রক্তদান (ইউনিট)',
-                        data: [45, 52, 38, 65, 48, 72, 58],
-                        borderColor: '#dc3545',
-                        backgroundColor: 'rgba(220, 53, 69, 0.1)',
-                        tension: 0.4,
-                        fill: true
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                callback: function(value) {
-                                    return value + ' ইউনিট';
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-
-            // Blood Group Distribution Chart
-            const bloodGroupCtx = document.getElementById('bloodGroupChart').getContext('2d');
-            new Chart(bloodGroupCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['A+', 'B+', 'O+', 'AB+', 'A-', 'B-', 'O-', 'AB-'],
-                    datasets: [{
-                        data: [45, 38, 52, 28, 18, 14, 5, 12],
-                        backgroundColor: [
-                            '#dc3545',
-                            '#0066cc',
-                            '#28a745',
-                            '#ffc107',
-                            '#e74c3c',
-                            '#0056b3',
-                            '#20c997',
-                            '#fd7e14'
-                        ]
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'bottom'
-                        }
-                    }
-                }
-            });
-        }
-
-        // Contact buttons functionality
-        document.querySelectorAll('.donor-card button').forEach(button => {
-            button.addEventListener('click', function() {
-                const donorCard = this.closest('.donor-card');
-                const donorName = donorCard.querySelector('h5').textContent;
-                const donorPhone = donorCard.querySelector('p:last-of-type').textContent.split(': ')[1];
-                
-                if (confirm(`${donorName} এর সাথে যোগাযোগ করতে চান?\nফোন: ${donorPhone}`)) {
-                    // In a real app, this would initiate a call or send SMS
-                    alert(`📞 ${donorPhone} নম্বরে কল করুন অথবা SMS পাঠান।`);
-                }
-            });
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97a83cfa524eded3',t:'MTc1NzEwMTY0NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97abd69275e3ded3',t:'MTc1NzEzOTM5Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
